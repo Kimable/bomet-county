@@ -19,6 +19,8 @@ import BreadCrumb from "@/app/components/common/breadcrumbs/page";
 import { markAttendance } from "@/store/reducer/user/markattendanceReducer";
 import { fetchAttendanceDetail } from "@/store/reducer/user/singleAttendanceDetailReducer";
 import CurrentDate from "@/app/components/common/currentdate/page";
+import { useRouter } from "next/navigation";
+import { verifyUser } from "@/app/middlewares/verifyLoggedInUser";
 
 const Dashboard = () => {
   let attendanceDetails = null;
@@ -27,6 +29,15 @@ const Dashboard = () => {
   const [totalTime, setTotalTime] = useState(0);
   const [onBreak, setOnBreak] = useState(false); // Initialize onBreak as false
   const dispatch = useDispatch();
+
+  let router = useRouter();
+  const user = verifyUser();
+
+  useEffect(() => {
+    if (user == null) {
+      return router.push("/");
+    }
+  }, [router]);
 
   // Function to show attendance status as a toast
   const showAttendanceStatusToast = (message) => {
@@ -184,91 +195,93 @@ const Dashboard = () => {
   const formattedTotalWorkingTime = calculateTotalWorkingHours(totalTime);
 
   return (
-    <EmployeeLayout>
-      <div className="bg-card p-2 m-2 rounded-lg mb-5">
-        <div className="flex justify-between items-center my-2">
-          <BreadCrumb text="Good Day , Kashif" />
-          <button className="flex items-center text-white text-sm text-center bg-themeColor p-2 rounded-lg">
-            <FiCalendar className="text-white mx-2" /> <CurrentDate />
-          </button>
-        </div>
+    user !== null && (
+      <EmployeeLayout>
+        <div className="bg-card p-2 m-2 rounded-lg mb-5">
+          <div className="flex justify-between items-center my-2">
+            <BreadCrumb text="Good Day , Kashif" />
+            <button className="flex items-center text-white text-sm text-center bg-themeColor p-2 rounded-lg">
+              <FiCalendar className="text-white mx-2" /> <CurrentDate />
+            </button>
+          </div>
 
-        <hr className="mb-5"></hr>
-        <div className="flex flex-wrap justify-center p-3">
-          {!onBreak ? (
-            <EmployeeAttendanceCard
-              textColor="text-white"
-              bgColor="bg-[#82b29a]"
-              icon={<FiLogIn />}
-              time={
-                checkinTime
-                  ? formattedCheckinTime
-                  : attendanceDetails?.checkIn || currentTime
-              }
-              cardTitle={
-                checkinTime || attendanceDetails?.checkIn
-                  ? "Checked in"
-                  : "Not Checked In"
-              }
-              onClick={handleCheckIn}
-            />
-          ) : null}
-          {onBreak ? (
-            // Show this card when onBreak is true
-            <EmployeeAttendanceCard
-              textColor="text-white"
-              bgColor="bg-[#fb7185]"
-              icon={<FiMonitor />}
-              time="01h 45m"
-              cardTitle="Back To Work"
-              onClick={handleBreakEnd} // Call handleBreakEnd when clicked
-            />
-          ) : (
-            // Show this card when onBreak is false
+          <hr className="mb-5"></hr>
+          <div className="flex flex-wrap justify-center p-3">
+            {!onBreak ? (
+              <EmployeeAttendanceCard
+                textColor="text-white"
+                bgColor="bg-[#82b29a]"
+                icon={<FiLogIn />}
+                time={
+                  checkinTime
+                    ? formattedCheckinTime
+                    : attendanceDetails?.checkIn || currentTime
+                }
+                cardTitle={
+                  checkinTime || attendanceDetails?.checkIn
+                    ? "Checked in"
+                    : "Not Checked In"
+                }
+                onClick={handleCheckIn}
+              />
+            ) : null}
+            {onBreak ? (
+              // Show this card when onBreak is true
+              <EmployeeAttendanceCard
+                textColor="text-white"
+                bgColor="bg-[#fb7185]"
+                icon={<FiMonitor />}
+                time="01h 45m"
+                cardTitle="Back To Work"
+                onClick={handleBreakEnd} // Call handleBreakEnd when clicked
+              />
+            ) : (
+              // Show this card when onBreak is false
+              <EmployeeAttendanceCard
+                textColor="text-textColor"
+                bgColor="bg-[#ffe4e6]"
+                icon={<FiCoffee />}
+                time="01h 45m"
+                cardTitle="Break"
+                onClick={handleBreakStart} // Call handleBreakStart when clicked
+              />
+            )}
+            {checkinTime !== "" && (
+              <EmployeeAttendanceCard
+                textColor="text-textColor"
+                bgColor="bg-[#ffedd5]"
+                icon={<FiLogOut />}
+                time="6:00 P.M"
+                cardTitle="Check out"
+                onClick={handleCheckOut}
+              />
+            )}
             <EmployeeAttendanceCard
               textColor="text-textColor"
-              bgColor="bg-[#ffe4e6]"
-              icon={<FiCoffee />}
-              time="01h 45m"
-              cardTitle="Break"
-              onClick={handleBreakStart} // Call handleBreakStart when clicked
+              bgColor="bg-[#e0e7ff]"
+              icon={<FiClock />}
+              time={formattedTotalWorkingTime}
+              cardTitle="Working hours"
             />
-          )}
-          {checkinTime !== "" && (
-            <EmployeeAttendanceCard
-              textColor="text-textColor"
-              bgColor="bg-[#ffedd5]"
-              icon={<FiLogOut />}
-              time="6:00 P.M"
-              cardTitle="Check out"
-              onClick={handleCheckOut}
-            />
-          )}
-          <EmployeeAttendanceCard
-            textColor="text-textColor"
-            bgColor="bg-[#e0e7ff]"
-            icon={<FiClock />}
-            time={formattedTotalWorkingTime}
-            cardTitle="Working hours"
-          />
-          <ToastContainer />
-        </div>
-      </div>
-      <div className="mb-5 bg-card p-2 m-2 rounded-lg mb-5">
-        <div className="md:flex md:justify-between md:items-center">
-          <div className="w-full md:w-3/12 p-3 bg-white rounded-lg shadow md:mx-4">
-            <CircularProgressBar percentage={14} color="#7e22ce" />
-          </div>
-          <div className="w-full md:w-8/12 flex justify-center bg-white rounded-lg shadow md:mx-4  ">
-            <LineChart
-              role="Graphical Report"
-              color="#7e22ce"
-              shadowColor="#f5f3ff"
-            />
+            <ToastContainer />
           </div>
         </div>
-      </div>
-    </EmployeeLayout>
+        <div className="bg-card p-2 m-2 rounded-lg mb-5">
+          <div className="md:flex md:justify-between md:items-center">
+            <div className="w-full md:w-3/12 p-3 bg-white rounded-lg shadow md:mx-4">
+              <CircularProgressBar percentage={14} color="#7e22ce" />
+            </div>
+            <div className="w-full md:w-8/12 flex justify-center bg-white rounded-lg shadow md:mx-4  ">
+              <LineChart
+                role="Graphical Report"
+                color="#7e22ce"
+                shadowColor="#f5f3ff"
+              />
+            </div>
+          </div>
+        </div>
+      </EmployeeLayout>
+    )
   );
 };
 

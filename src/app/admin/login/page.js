@@ -22,13 +22,13 @@ const Login = () => {
     localStorage.setItem("token", token);
     localStorage.setItem("admin", isAdmin);
 
-    redirect("/admin/dashboard");
+    router.push("/admin/dashboard");
   };
   // if admin is already logged in
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
-      redirect("/admin/dashboard");
+      router.push("/admin/dashboard");
     }
   }, []);
 
@@ -41,13 +41,6 @@ const Login = () => {
               <h1 className="text-lg font-bold leading-tight tracking-tight text-textColor md:text-2xl ">
                 Welcome Back
               </h1>
-              <div className="md:flex"></div>
-
-              <div className="flex items-center">
-                <hr className="flex-1 h-px my-8 bg-gray-200 border-0 " />
-                <span className="mx-4 text-gray-400">or</span>
-                <hr className="flex-1 h-px my-8 bg-gray-200 border-0 " />
-              </div>
 
               <form
                 className="space-y-4 md:space-y-6"

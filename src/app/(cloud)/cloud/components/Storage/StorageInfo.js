@@ -10,9 +10,17 @@ import React, { useEffect, useState } from "react";
 import { app } from "@/app/Config/FirebaseConfig";
 import StorageSize from "../../Services/StorageSize";
 import { verifyUser } from "@/app/middlewares/verifyLoggedInUser";
+import { useRouter } from "next/navigation";
 
 function StorageInfo() {
+  let router = useRouter();
+
   const user = verifyUser();
+
+  if (user === null) {
+    return router.push("/");
+  }
+
   const db = getFirestore(app);
   const [totalSizeUsed, setTotalSizeUsed] = useState(0);
   const [imageSize, setImageSize] = useState(0);

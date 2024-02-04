@@ -44,7 +44,7 @@ const userLoginHandler = async (request) => {
     };
 
     // Generate and sign the JWT token
-    const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "9h" }); // Token expires in 9 hours
+    const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "7d" }); // Token expires in 9 hours
 
     // Return the token in the response
     return NextResponse.json(

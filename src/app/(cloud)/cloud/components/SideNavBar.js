@@ -12,6 +12,9 @@ function SideNavBar() {
   const router = useRouter();
 
   const user = verifyUser();
+  if (user === null) {
+    return router.push("/");
+  }
 
   const onMenuClick = (item, index) => {
     setActiveIndex(index);

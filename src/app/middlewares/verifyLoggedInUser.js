@@ -5,13 +5,26 @@ require("dotenv").config();
 
 export const verifyUser = () => {
   const router = useRouter();
-  let token;
-  if (typeof window !== "undefined") {
-    token = localStorage.getItem("token");
-    if (token == "" || token == null) {
-      return router.push("/");
+  let user, token;
+  try {
+    if (typeof window !== "undefined") {
+      token = localStorage.getItem("token");
+      if (token == "" || token == null) {
+        token = localStorage.setItem("token", "");
+        user = null;
+        return user;
+      }
+      user = jwt.verify(token, "bometSystem1290");
+
+      console.log(user);
+      return user;
     }
-    const user = jwt.verify(token, "bometSystem1290");
+  } catch (error) {
+    console.log("JWT ERROR: ", error);
+    if (typeof window !== "undefined") {
+      token = localStorage.setItem("token", "");
+    }
+    user = null;
     return user;
   }
 };

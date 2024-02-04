@@ -1,9 +1,13 @@
 import { verifyUser } from "@/app/middlewares/verifyLoggedInUser";
 import Image from "next/image";
+import { redirect } from "next/navigation";
 import React from "react";
 
 function UserInfo() {
   const user = verifyUser();
+  if (user === null) {
+    return redirect("/");
+  }
 
   return (
     <div>

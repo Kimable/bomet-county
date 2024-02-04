@@ -7,12 +7,17 @@ import { doc, getFirestore, setDoc } from "firebase/firestore";
 import { ShowToastContext } from "../../context/ShowToastContext";
 import { ParentFolderIdContext } from "../../context/ParentFolderIdContext";
 import { verifyUser } from "@/app/middlewares/verifyLoggedInUser";
+import { useRouter } from "next/navigation";
 function CreateFolderModal() {
   const docId = Date.now().toString();
   const [folderName, setFolderName] = useState();
   const { showToastMsg, setShowToastMsg } = useContext(ShowToastContext);
 
   const user = verifyUser();
+  let router = useRouter();
+  if (user === null) {
+    return router.push("/");
+  }
 
   const { parentFolderId, setParentFolderId } = useContext(
     ParentFolderIdContext

@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import { FiCheck, FiX } from "react-icons/fi";
 
@@ -37,9 +38,7 @@ const SingleShiftDetail = ({ shift }) => {
         >
           <div className="text-2xl font-medium mb-2">{shiftName}</div>
           <div key={index}>
-            <div className="text-sm mb-2 text-lightText mb-5">
-              {weekday.name}
-            </div>
+            <div className="text-sm text-lightText mb-5">{weekday.name}</div>
             <div
               className={`card ${
                 weekday.data.isOffDay
@@ -59,7 +58,7 @@ const SingleShiftDetail = ({ shift }) => {
                 {weekday.data.isOffDay && <>24 Hours off</>}
               </div>
               <div className="my-2 uppercase text-lightText text-xs">Hours</div>
-              <div className="mb-2 flex items-center mb-4">
+              <div className="flex items-center mb-4">
                 <div
                   className={`${
                     weekday.data.isOffDay ? "bg-redColor" : "bg-greenColor"

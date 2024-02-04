@@ -26,6 +26,10 @@ export default function Home() {
   const [fileList, setFileList] = useState([]);
   const user = verifyUser();
 
+  if (user === null) {
+    return router.push("/");
+  }
+
   const db = getFirestore(app);
   const { parentFolderId, setParentFolderId } = useContext(
     ParentFolderIdContext

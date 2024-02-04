@@ -18,7 +18,12 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { fetchUsers } from "@/store/reducer/supervisor/fetchUsersReducer";
 import CurrentDate from "@/app/components/common/currentdate/page";
+import { useRouter } from "next/navigation";
+import { verifyUser } from "@/app/middlewares/verifyLoggedInUser";
 const Dashboard = () => {
+  let router = useRouter();
+  const user = verifyUser();
+
   const [users, setUsers] = useState([]);
   let attendanceDetails = null;
 
@@ -222,136 +227,153 @@ const Dashboard = () => {
       return `${days} day ago`;
     }
   };
+
+  useEffect(() => {
+    if (user == null) {
+      return router.push("/");
+    }
+  }, [router]);
+
   return (
-    <SupervisorLayout>
-      <div className="md:flex ">
-        {/* Use the CustomSidebar component with the necessary props */}
-        <div className="w-full md:w-9/12">
-          <div className="flex flex-wrap justify-center p-3">
-            {!onBreak ? (
-              <EmployeeAttendanceCard
-                textColor="text-white"
-                bgColor="bg-[#82b29a]"
-                icon={<FiLogIn />}
-                time={
-                  checkinTime
-                    ? formattedCheckinTime
-                    : attendanceDetails?.checkIn || currentTime
-                }
-                cardTitle={
-                  checkinTime || attendanceDetails?.checkIn
-                    ? "Checked in"
-                    : "Not Checked In"
-                }
-                onClick={handleCheckIn}
-              />
-            ) : null}
-            {onBreak ? (
-              // Show this card when onBreak is true
-              <EmployeeAttendanceCard
-                textColor="text-white"
-                bgColor="bg-[#fb7185]"
-                icon={<FiMonitor />}
-                time="01h 45m"
-                cardTitle="Back To Work"
-                onClick={handleBreakEnd} // Call handleBreakEnd when clicked
-              />
-            ) : (
-              // Show this card when onBreak is false
+    user !== null && (
+      <SupervisorLayout>
+        <div className="md:flex ">
+          {/* Use the CustomSidebar component with the necessary props */}
+          <div className="w-full md:w-9/12">
+            <div className="flex flex-wrap justify-center p-3">
+              {!onBreak ? (
+                <EmployeeAttendanceCard
+                  textColor="text-white"
+                  bgColor="bg-[#82b29a]"
+                  icon={<FiLogIn />}
+                  time={
+                    checkinTime
+                      ? formattedCheckinTime
+                      : attendanceDetails?.checkIn || currentTime
+                  }
+                  cardTitle={
+                    checkinTime || attendanceDetails?.checkIn
+                      ? "Checked in"
+                      : "Not Checked In"
+                  }
+                  onClick={handleCheckIn}
+                />
+              ) : null}
+              {onBreak ? (
+                // Show this card when onBreak is true
+                <EmployeeAttendanceCard
+                  textColor="text-white"
+                  bgColor="bg-[#fb7185]"
+                  icon={<FiMonitor />}
+                  time="01h 45m"
+                  cardTitle="Back To Work"
+                  onClick={handleBreakEnd} // Call handleBreakEnd when clicked
+                />
+              ) : (
+                // Show this card when onBreak is false
+                <EmployeeAttendanceCard
+                  textColor="text-textColor"
+                  bgColor="bg-[#ffe4e6]"
+                  icon={<FiCoffee />}
+                  time="01h 45m"
+                  cardTitle="Break"
+                  onClick={handleBreakStart} // Call handleBreakStart when clicked
+                />
+              )}
+              {checkinTime !== "" && (
+                <EmployeeAttendanceCard
+                  textColor="text-textColor"
+                  bgColor="bg-[#ffedd5]"
+                  icon={<FiLogOut />}
+                  time="6:00 P.M"
+                  cardTitle="Check out"
+                  onClick={handleCheckOut}
+                />
+              )}
               <EmployeeAttendanceCard
                 textColor="text-textColor"
-                bgColor="bg-[#ffe4e6]"
-                icon={<FiCoffee />}
-                time="01h 45m"
-                cardTitle="Break"
-                onClick={handleBreakStart} // Call handleBreakStart when clicked
+                bgColor="bg-[#e0e7ff]"
+                icon={<FiClock />}
+                time={formattedTotalWorkingTime}
+                cardTitle="Working hours"
               />
-            )}
-            {checkinTime !== "" && (
-              <EmployeeAttendanceCard
-                textColor="text-textColor"
-                bgColor="bg-[#ffedd5]"
-                icon={<FiLogOut />}
-                time="6:00 P.M"
-                cardTitle="Check out"
-                onClick={handleCheckOut}
+              <ToastContainer />
+            </div>
+            <div className=" mx-2  my-2 flex justify-center bg-card rounded-lg shadow  ">
+              <LineChart
+                role="Employees"
+                color="#29CC6A"
+                shadowColor="#dcfce7"
               />
-            )}
-            <EmployeeAttendanceCard
-              textColor="text-textColor"
-              bgColor="bg-[#e0e7ff]"
-              icon={<FiClock />}
-              time={formattedTotalWorkingTime}
-              cardTitle="Working hours"
-            />
-            <ToastContainer />
-          </div>
-          <div className=" mx-2  my-2 flex justify-center bg-card rounded-lg shadow  ">
-            <LineChart role="Employees" color="#29CC6A" shadowColor="#dcfce7" />
-          </div>
-        </div>
-        <div className="w-full md:w-3/12 mx-3 p-3 border border-r-0 border-t-0 border-b-0 border-gray-300">
-          {/* total attendance  */}
-          <div className="mt-5">
-            <div className="text-textColor font-bold mb-2">
-              Today's Attendance{" "}
             </div>
-            <div className="text-gray-500 font-light text-sm mb-5 ">
-              <CurrentDate />{" "}
-            </div>
-            <div className="flex items-center mb-4">
-              <div className="p-2 bg-green-100 rounded-full">
-                <FiUserCheck className="text-greenColor w-[25px] h-[25px]" />
+          </div>
+          <div className="w-full md:w-3/12 mx-3 p-3 border border-r-0 border-t-0 border-b-0 border-gray-300">
+            {/* total attendance  */}
+            <div className="mt-5">
+              <div className="text-textColor font-bold mb-2">
+                Today's Attendance{" "}
               </div>
-              <div className="mx-3">
-                <div className="text-textColor font-light mb-2">Employees</div>
-                <div className="text-greenColor font-medium text-sm  ">
-                  {usersWithCheckIn}/{totalUsers}
+              <div className="text-gray-500 font-light text-sm mb-5 ">
+                <CurrentDate />{" "}
+              </div>
+              <div className="flex items-center mb-4">
+                <div className="p-2 bg-green-100 rounded-full">
+                  <FiUserCheck className="text-greenColor w-[25px] h-[25px]" />
+                </div>
+                <div className="mx-3">
+                  <div className="text-textColor font-light mb-2">
+                    Employees
+                  </div>
+                  <div className="text-greenColor font-medium text-sm  ">
+                    {usersWithCheckIn}/{totalUsers}
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          {/* recent attendance  */}
-          <div className="mt-5">
-            <div className="text-textColor font-bold mb-5">
-              Recent Attendance
+            {/* recent attendance  */}
+            <div className="mt-5">
+              <div className="text-textColor font-bold mb-5">
+                Recent Attendance
+              </div>
+
+              {users
+                .filter((user) => user.attendance.length > 0) // Filter users with check-ins
+                .map((user) => {
+                  const latestAttendance = user.attendance
+                    .filter((attendance) => attendance.checkIn)
+                    .sort(
+                      (a, b) => new Date(b.checkIn) - new Date(a.checkIn)
+                    )[0]; // Get the latest attendance record
+
+                  return latestAttendance ? (
+                    <div className="flex items-center mb-4" key={user._id}>
+                      <div className="">
+                        <img
+                          className="w-[40px] h-[40px] mb-3 rounded-full shadow-lg"
+                          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWdMBviWKCk0hSEFULTZepZeTLRiB6u5MACg&usqp=CAU"
+                          alt={`${user.firstName} ${user.lastName}`}
+                        />
+                      </div>
+                      <div className="mx-3">
+                        <div className="text-textColor font-light">
+                          {user.firstName} {user.lastName}
+                        </div>
+                        <div className="text-gray-400 font-medium text-sm mb-2">
+                          Employee
+                        </div>
+                        <div className="text-gray-400 font-light text-sm">
+                          {formatTimeDifference(latestAttendance.checkIn)}
+                        </div>
+                      </div>
+                    </div>
+                  ) : null;
+                })}
             </div>
-
-            {users
-              .filter((user) => user.attendance.length > 0) // Filter users with check-ins
-              .map((user) => {
-                const latestAttendance = user.attendance
-                  .filter((attendance) => attendance.checkIn)
-                  .sort((a, b) => new Date(b.checkIn) - new Date(a.checkIn))[0]; // Get the latest attendance record
-
-                return latestAttendance ? (
-                  <div className="flex items-center mb-4" key={user._id}>
-                    <div className="">
-                      <img
-                        className="w-[40px] h-[40px] mb-3 rounded-full shadow-lg"
-                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWdMBviWKCk0hSEFULTZepZeTLRiB6u5MACg&usqp=CAU"
-                        alt={`${user.firstName} ${user.lastName}`}
-                      />
-                    </div>
-                    <div className="mx-3">
-                      <div className="text-textColor font-light">
-                        {user.firstName} {user.lastName}
-                      </div>
-                      <div className="text-gray-400 font-medium text-sm mb-2">
-                        Employee
-                      </div>
-                      <div className="text-gray-400 font-light text-sm">
-                        {formatTimeDifference(latestAttendance.checkIn)}
-                      </div>
-                    </div>
-                  </div>
-                ) : null;
-              })}
           </div>
         </div>
-      </div>
-    </SupervisorLayout>
+      </SupervisorLayout>
+    )
   );
 };
 

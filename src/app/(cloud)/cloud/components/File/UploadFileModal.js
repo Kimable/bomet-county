@@ -7,8 +7,15 @@ import { ParentFolderIdContext } from "../../context/ParentFolderIdContext";
 import { ShowToastContext } from "../../context/ShowToastContext";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { verifyUser } from "@/app/middlewares/verifyLoggedInUser";
+import { useRouter } from "next/navigation";
+
 function UploadFileModal({ closeModal }) {
+  let router = useRouter();
+
   const user = verifyUser();
+  if (user === null) {
+    return router.push("/");
+  }
 
   const { parentFolderId, setParentFolderId } = useContext(
     ParentFolderIdContext

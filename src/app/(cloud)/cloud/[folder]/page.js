@@ -25,6 +25,10 @@ function FolderDetails() {
   const id = searchParams.get("id");
   let user = verifyUser();
 
+  if (user === null) {
+    return router.push("/");
+  }
+
   const { parentFolderId, setParentFolderId } = useContext(
     ParentFolderIdContext
   );

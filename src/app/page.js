@@ -11,27 +11,21 @@ const Home = () => {
   const { register, handleSubmit } = useForm();
   const dispatch = useDispatch();
 
-  const onSubmit = (data) => {
-    dispatch(userLogin(data))
-      .then((response) => {
-        // Extract the response data from the 'data' property
-        const responseData = response.data;
-        const { token, teamLead } = responseData;
+  const onSubmit = async (data) => {
+    let response = await fetch(`/api/user/userlogin`, {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
 
-        // Store the token and teamLead status in the local storage
-        localStorage.setItem("token", token);
-        localStorage.setItem("teamLead", teamLead);
+    const responseData = await response.json();
+    console.log(responseData);
+    const { token, teamLead } = responseData;
 
-        // Redirect to the appropriate dashboard based on the teamLead status
-        if (teamLead) {
-          router.push("/supervisor/dashboard");
-        } else {
-          router.push("/employee/dashboard");
-        }
-      })
-      .catch((error) => {
-        console.log("Login failed:", error.message);
-      });
+    // Store the token and teamLead status in the local storage
+    localStorage.setItem("token", token);
+    localStorage.setItem("teamLead", teamLead);
+
+    router.push("/employee/dashboard");
   };
 
   return (

@@ -66,7 +66,7 @@ const FilterResult = () => {
           <input
             type="date"
             id="from_date"
-            className="text-xs border border-card text-textColor text-sm rounded-lg focus:outline-none block w-full p-2.5 "
+            className="border border-card text-textColor text-sm rounded-lg focus:outline-none block w-full p-2.5 "
           />
         </div>
         <div className="w-full mb-2">
@@ -79,7 +79,7 @@ const FilterResult = () => {
           <input
             type="date"
             id="to_date"
-            className="text-xs border border-card text-textColor text-sm rounded-lg focus:outline-none block w-full p-2.5 "
+            className="border border-card text-textColor text-sm rounded-lg focus:outline-none block w-full p-2.5 "
           />
         </div>
       </div>
