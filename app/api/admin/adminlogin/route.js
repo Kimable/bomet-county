@@ -46,7 +46,11 @@ const adminLoginHandler = async (request) => {
     };
 
     // Generate and sign the JWT token
-    const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "7d" });
+    const token = jwt.sign(
+      payload,
+      "DKbNMiLI3h4UhfDi4/fhIQo/ejgYab/K7pc0ymPNky0=",
+      { expiresIn: "7d" }
+    );
 
     // Return the token in the response
     return NextResponse.json(

@@ -44,7 +44,11 @@ const adminRegisterHandler = async (request) => {
     };
 
     // Generate and sign the JWT token
-    const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "9h" }); // Token expires in 9 hours
+    const token = jwt.sign(
+      payload,
+      "DKbNMiLI3h4UhfDi4/fhIQo/ejgYab/K7pc0ymPNky0=",
+      { expiresIn: "9h" }
+    ); // Token expires in 9 hours
 
     // Return the token in the response
     return NextResponse.json(
