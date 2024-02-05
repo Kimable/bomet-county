@@ -16,8 +16,6 @@ import {
   where,
 } from "firebase/firestore";
 import { app } from "@/app/Config/FirebaseConfig";
-import { ParentFolderIdContext } from "./context/ParentFolderIdContext";
-import { ShowToastContext } from "./context/ShowToastContext";
 import { verifyUser } from "@/app/middlewares/verifyLoggedInUser";
 
 export default function Home() {
@@ -31,17 +29,11 @@ export default function Home() {
   }
 
   const db = getFirestore(app);
-  const { parentFolderId, setParentFolderId } = useContext(
-    ParentFolderIdContext
-  );
-  const { showToastMsg, setShowToastMsg } = useContext(ShowToastContext);
 
   useEffect(() => {
     setFolderList([]);
     getFolderList();
     getFileList();
-
-    setParentFolderId(0);
   }, []);
 
   const getFolderList = async () => {
@@ -65,7 +57,7 @@ export default function Home() {
     const q = query(
       collection(db, "files"),
       where("parentFolderId", "==", 0),
-      where("createdBy", "==", user.email)
+      where("createdBy", "==", user?.email)
     );
 
     const querySnapshot = await getDocs(q);
