@@ -7,7 +7,7 @@ import { ParentFolderIdContext } from "../../context/ParentFolderIdContext";
 import { ShowToastContext } from "../../context/ShowToastContext";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { verifyUser } from "@/app/middlewares/verifyLoggedInUser";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 function UploadFileModal({ closeModal }) {
   let router = useRouter();
@@ -21,6 +21,13 @@ function UploadFileModal({ closeModal }) {
     ParentFolderIdContext
   );
   const { showToastMsg, setShowToastMsg } = useContext(ShowToastContext);
+
+  const params = useSearchParams();
+  let id = params.get("id");
+
+  if (id == null) {
+    id = 0;
+  }
 
   const docId = Date.now();
   const db = getFirestore(app);
@@ -37,6 +44,7 @@ function UploadFileModal({ closeModal }) {
       uploadBytes(fileRef, file)
         .then((snapshot) => {
           console.log("Uploaded a blob or file!");
+          setParentFolderId(id);
         })
         .then((resp) => {
           getDownloadURL(fileRef).then(async (downloadURL) => {
@@ -47,7 +55,7 @@ function UploadFileModal({ closeModal }) {
               size: file.size,
               modifiedAt: file.lastModified,
               createdBy: user.email,
-              parentFolderId: parentFolderId,
+              parentFolderId: id,
               imageUrl: downloadURL,
               id: docId,
             });

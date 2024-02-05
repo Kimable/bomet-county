@@ -21,9 +21,16 @@ import { verifyUser } from "@/app/middlewares/verifyLoggedInUser";
 function FolderDetails() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const name = searchParams.get("name");
-  const id = searchParams.get("id");
-  let user = verifyUser();
+  const [folderList, setFolderList] = useState([]);
+  const [fileList, setFileList] = useState([]);
+
+  let id = searchParams.get("id");
+
+  if (id == null) {
+    id = 0;
+  }
+
+  const user = verifyUser();
 
   if (user === null) {
     return router.push("/");
@@ -35,17 +42,11 @@ function FolderDetails() {
 
   const { showToastMsg, setShowToastMsg } = useContext(ShowToastContext);
 
-  const [folderList, setFolderList] = useState([]);
-  const [fileList, setFileList] = useState([]);
   const db = getFirestore(app);
+
   useEffect(() => {
-    setParentFolderId(id);
-    if (showToastMsg != null) {
-      setFolderList([]);
-      setFileList([]);
-      getFolderList();
-      getFileList();
-    }
+    getFolderList();
+    getFileList();
   }, []);
 
   const deleteFolder = async () => {
@@ -59,16 +60,17 @@ function FolderDetails() {
     setFolderList([]);
     const q = query(
       collection(db, "Folders"),
-      where("createBy", "==", user.email),
-      where("parentFolderId", "==", id)
+      where("parentFolderId", "==", id),
+      where("createBy", "==", user?.email)
     );
-    console.log("InFolderList");
+
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
       // doc.data() is never undefined for query doc snapshots
-      // console.log(doc.id, " => ", doc.data());
+      console.log(doc.id, " => ", doc.data());
       setFolderList((folderList) => [...folderList, doc.data()]);
     });
+    console.log(folderList);
   };
 
   const getFileList = async () => {
@@ -76,21 +78,23 @@ function FolderDetails() {
     const q = query(
       collection(db, "files"),
       where("parentFolderId", "==", id),
-      where("createdBy", "==", user.email)
+      where("createdBy", "==", user?.email)
     );
-    console.log("fole");
+
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
       // doc.data() is never undefined for query doc snapshots
-      console.log(doc.id, " => ", doc.data());
+      // console.log(doc.id, " => ", doc.data());
       setFileList((fileList) => [...fileList, doc.data()]);
+      console.log(fileList);
     });
   };
+
   return (
     <div className="p-5">
       <SearchBar />
       <h2 className="text-[20px] font-bold mt-5">
-        {name}
+        {fileList?.name}
         <svg
           xmlns="http://www.w3.org/2000/svg"
           onClick={() => deleteFolder()}

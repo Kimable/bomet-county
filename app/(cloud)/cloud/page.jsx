@@ -74,8 +74,6 @@ export default function Home() {
       // console.log(doc.id, " => ", doc.data());
       setFileList((fileList) => [...fileList, doc.data()]);
     });
-
-    console.log(folderList, fileList, user);
   };
   return (
     <div className="p-5">

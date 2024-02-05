@@ -1,12 +1,14 @@
 "use client";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import FolderItem from "./FolderItem";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import FolderItemSmall from "./FolderItemSmall";
 
 function FolderList({ folderList, isBig = true }) {
   const [activeFolder, setActiveFolder] = useState();
   const router = useRouter();
+
+  const searchParams = useSearchParams();
   //   const folderList=[
   //     {
   //         id:1,
@@ -29,16 +31,22 @@ function FolderList({ folderList, isBig = true }) {
   //         name:'Folder 4'
   //     },
   // ]
+  // const createQueryString = useCallback(
+  //   (name, value) => {
+  //     const params = new URLSearchParams(searchParams.toString());
+  //     params.set(name, value);
+
+  //     return params.toString();
+  //   },
+  //   [searchParams]
+  // );
 
   const onFolderClick = (index, item) => {
     setActiveFolder(index);
-    router.push("/cloud/" + item.id, {
-      query: {
-        name: item.name,
-        id: item.id,
-      },
-    });
+
+    router.push("/cloud/" + item.name + "?" + "id=" + item.id);
   };
+
   return (
     <div
       className="p-5 mt-5 

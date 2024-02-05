@@ -64,7 +64,7 @@ function FileList({ fileList }) {
       {fileList &&
         fileList.map((item, index) => (
           <div key={index}>
-            <FileItem file={item} key={index} />
+            <FileItem file={item} />
           </div>
         ))}
     </div>
