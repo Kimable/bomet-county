@@ -7,7 +7,7 @@ import { doc, getFirestore, setDoc } from "firebase/firestore";
 import { ShowToastContext } from "../../context/ShowToastContext";
 import { ParentFolderIdContext } from "../../context/ParentFolderIdContext";
 import { verifyUser } from "@/app/middlewares/verifyLoggedInUser";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 function CreateFolderModal() {
   const docId = Date.now().toString();
   const [folderName, setFolderName] = useState();
@@ -17,6 +17,13 @@ function CreateFolderModal() {
   let router = useRouter();
   if (user === null) {
     return router.push("/");
+  }
+
+  const params = useSearchParams();
+  let id = params.get("id");
+
+  if (id == null) {
+    id = 0;
   }
 
   const { parentFolderId, setParentFolderId } = useContext(
@@ -31,7 +38,7 @@ function CreateFolderModal() {
       name: folderName,
       id: docId,
       createBy: user.email,
-      parentFolderId: parentFolderId,
+      parentFolderId: id,
     });
     setShowToastMsg("Folder Created!");
   };
