@@ -65,7 +65,7 @@ function StorageInfo() {
         >
           used of{" "}
         </span>{" "}
-        50 MB
+        200 MB
       </h2>
       <div
         className="w-full

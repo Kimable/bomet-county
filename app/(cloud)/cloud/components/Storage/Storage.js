@@ -2,7 +2,6 @@ import React from "react";
 import UserInfo from "./UserInfo";
 import StorageInfo from "./StorageInfo";
 import StorageDetailList from "./StorageDetailList";
-import StorageUpgradeMsg from "./StorageUpgradeMsg";
 import { verifyUser } from "@/app/middlewares/verifyLoggedInUser";
 import { useRouter } from "next/navigation";
 
@@ -19,7 +18,6 @@ function Storage() {
         <UserInfo />
         <StorageInfo />
         <StorageDetailList />
-        <StorageUpgradeMsg />
       </div>
     )
   );
