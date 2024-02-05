@@ -45,7 +45,7 @@ const Navbar = ({ handleToggle, toggleDrawer }) => {
                 className="flex items-center py-2 px-4 text-xl text-white"
                 href="/cloud"
               >
-                CLOUD <FiCloud className="mx-2" />
+                DOCUMENTS <FiCloud className="mx-2" />
               </Link>
               <button
                 href="#"
