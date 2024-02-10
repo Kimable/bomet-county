@@ -1,5 +1,4 @@
 import React from "react";
-import UserInfo from "./UserInfo";
 import StorageInfo from "./StorageInfo";
 import StorageDetailList from "./StorageDetailList";
 import { verifyUser } from "@/app/middlewares/verifyLoggedInUser";
@@ -15,7 +14,6 @@ function Storage() {
   return (
     user && (
       <div>
-        <UserInfo />
         <StorageInfo />
         <StorageDetailList />
       </div>

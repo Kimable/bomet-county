@@ -9,12 +9,27 @@ import { useDispatch } from "react-redux";
 import CurrentDate from "@/app/components/common/currentdate/page";
 import { fetchTeamLeads } from "@/store/reducer/admin/fetchTeamLeadsReducer";
 import { fetchShifts } from "@/store/reducer/admin/fetchShiftsReducer";
+import { verifyUser } from "@/app/middlewares/verifyLoggedInUser";
+import { useRouter } from "next/navigation";
 
 const AddUser = () => {
   const [userType, setUserType] = useState("");
   const [teamLead, setTeamLead] = useState(false);
   const [teamLeadList, setTeamLeadList] = useState([]);
+  const [departments, setDepartments] = useState([]);
   const [shiftList, setshiftList] = useState([]);
+
+  const user = verifyUser();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (user == null) {
+      return router.push("/");
+    }
+    if (user.isAdmin !== true) {
+      return router.push("/unathorized");
+    }
+  }, [user]);
 
   // // for image
   // const [image, setImage] = useState(null);
@@ -72,6 +87,15 @@ const AddUser = () => {
       .catch((error) => {
         console.error("Error fetching shifts:", error);
       });
+  }, []);
+
+  // Fetch departments
+  useEffect(async () => {
+    const res = await fetch("/api/common/fetchDepartments", {
+      method: "GET",
+    });
+    const departments = await res.json();
+    setDepartments(departments.departments);
   }, []);
 
   return (
@@ -208,7 +232,7 @@ const AddUser = () => {
                 htmlFor="teamLeadEmail"
                 className="block mb-2 text-sm font-medium text-textColor"
               >
-                Select Team Lead (Supervisor)
+                Select Head of Department
               </label>
               <select
                 id="teamLeadEmail"
@@ -216,7 +240,7 @@ const AddUser = () => {
                 {...register("teamLeadEmail")}
               >
                 <option value="" disabled selected>
-                  Choose a team lead
+                  Choose Head of Department
                 </option>
                 {teamLeadList &&
                   teamLeadList.map((teamLead) => (
@@ -241,10 +265,14 @@ const AddUser = () => {
                 className="bg-card border border-card text-textColor text-sm rounded-lg focus:outline-none block w-full p-2.5"
               >
                 <option selected>Choose a department</option>
-                <option value="US">United States</option>
-                <option value="CA">Canada</option>
-                <option value="FR">France</option>
-                <option value="DE">Germany</option>
+                {departments.map((department) => (
+                  <option
+                    key={department?._id}
+                    value={department?.departmentName}
+                  >
+                    {department?.departmentName}
+                  </option>
+                ))}
               </select>
             </div>
             <div>

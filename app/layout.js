@@ -12,6 +12,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
+      <link rel="icon" href="/bomet-logo.jpg" sizes="any" />
       <body className={inter.className}>
         <Providers>{children}</Providers>
       </body>

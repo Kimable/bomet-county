@@ -13,6 +13,8 @@ import {
   FiUser,
   FiUserPlus,
   FiUsers,
+  FiBook,
+  FiLayout,
 } from "react-icons/fi";
 import Link from "next/link";
 
@@ -113,6 +115,28 @@ const CustomSidebar = ({ userRole, toggle, pathname }) => {
                 Add Shift{" "}
               </MenuItem>
             </SubMenu>
+
+            <SubMenu icon={<FiBook />} label="Department Management">
+              <MenuItem
+                icon={<FiLayout />}
+                active={activeItem === "/common/departments"}
+                onClick={() => handleMenuItemClick("/common/departments")}
+                component={<Link href="/common/departments" />}
+              >
+                {" "}
+                Departments{" "}
+              </MenuItem>
+              <MenuItem
+                icon={<FiPlusCircle />}
+                active={activeItem === "/admin/addDepartment"}
+                onClick={() => handleMenuItemClick("/admin/addDepartment")}
+                component={<Link href="/admin/addDepartment" />}
+              >
+                {" "}
+                Add Department{" "}
+              </MenuItem>
+            </SubMenu>
+
             <MenuItem
               icon={<FiCalendar />}
               active={activeItem === "/admin/leaves"}

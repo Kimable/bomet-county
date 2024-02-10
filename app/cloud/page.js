@@ -1,6 +1,4 @@
 "use client";
-
-import Head from "next/head";
 import Image from "next/image";
 import styles from "./styles/Home.module.css";
 import { useContext, useEffect, useState } from "react";
@@ -12,6 +10,7 @@ import {
   collection,
   getDocs,
   getFirestore,
+  onSnapshot,
   query,
   where,
 } from "firebase/firestore";
@@ -44,11 +43,11 @@ export default function Home() {
       where("createBy", "==", user?.email)
     );
 
-    const querySnapshot = await getDocs(q);
-    querySnapshot.forEach((doc) => {
-      // doc.data() is never undefined for query doc snapshots
-      console.log(doc.id, " => ", doc.data());
-      setFolderList((folderList) => [...folderList, doc.data()]);
+    const querySnapshot = onSnapshot(q, (snapshot) => {
+      snapshot.docChanges().forEach((change) => {
+        console.log(change.doc.id, " => ", change.doc.data());
+        setFolderList((folderList) => [...folderList, change.doc.data()]);
+      });
     });
   };
 
@@ -60,11 +59,10 @@ export default function Home() {
       where("createdBy", "==", user?.email)
     );
 
-    const querySnapshot = await getDocs(q);
-    querySnapshot.forEach((doc) => {
-      // doc.data() is never undefined for query doc snapshots
-      // console.log(doc.id, " => ", doc.data());
-      setFileList((fileList) => [...fileList, doc.data()]);
+    const querySnapshot = onSnapshot(q, (snapshot) => {
+      snapshot.docChanges().forEach((change) => {
+        setFileList((fileList) => [...fileList, change.doc.data()]);
+      });
     });
   };
   return (

@@ -39,8 +39,10 @@ const userLoginHandler = async (request) => {
     const payload = {
       userId: existingUser._id,
       firstName: existingUser.firstName,
+      lastName: existingUser.lastName,
       email: existingUser.email,
       teamLead: existingUser.teamLead,
+      isAdmin: existingUser.isAdmin,
     };
 
     // Generate and sign the JWT token
@@ -56,6 +58,7 @@ const userLoginHandler = async (request) => {
         message: "Login successful",
         token: token,
         teamLead: existingUser.teamLead,
+        isAdmin: existingUser.isAdmin,
       },
       {
         status: 200,

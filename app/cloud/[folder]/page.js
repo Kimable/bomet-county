@@ -8,6 +8,7 @@ import {
   deleteDoc,
   doc,
   getDocs,
+  onSnapshot,
   getFirestore,
   query,
   where,
@@ -64,11 +65,11 @@ function FolderDetails() {
       where("createBy", "==", user?.email)
     );
 
-    const querySnapshot = await getDocs(q);
-    querySnapshot.forEach((doc) => {
-      // doc.data() is never undefined for query doc snapshots
-      console.log(doc.id, " => ", doc.data());
-      setFolderList((folderList) => [...folderList, doc.data()]);
+    onSnapshot(q, (snapshot) => {
+      snapshot.docChanges().forEach((change) => {
+        console.log(change.doc.id, " => ", change.doc.data());
+        setFolderList((folderList) => [...folderList, change.doc.data()]);
+      });
     });
     console.log(folderList);
   };
@@ -81,12 +82,10 @@ function FolderDetails() {
       where("createdBy", "==", user?.email)
     );
 
-    const querySnapshot = await getDocs(q);
-    querySnapshot.forEach((doc) => {
-      // doc.data() is never undefined for query doc snapshots
-      // console.log(doc.id, " => ", doc.data());
-      setFileList((fileList) => [...fileList, doc.data()]);
-      console.log(fileList);
+    onSnapshot(q, (snapshot) => {
+      snapshot.docChanges().forEach((change) => {
+        setFileList((fileList) => [...fileList, change.doc.data()]);
+      });
     });
   };
 

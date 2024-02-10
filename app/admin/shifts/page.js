@@ -18,7 +18,7 @@ const Shifts = () => {
       .then((response) => {
         // Assuming response.data is an array of shifts
         setshiftList(response.data.allShifts);
-        console.log(response.data);
+        console.log(response.data.allShifts);
       })
       .catch((error) => {
         console.error("Error fetching shifts:", error);

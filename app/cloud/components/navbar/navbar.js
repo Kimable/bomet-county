@@ -9,17 +9,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { verifyUser } from "@/app/middlewares/verifyLoggedInUser";
 
-const Navbar = ({ handleToggle, toggleDrawer }) => {
-  const dispatch = useDispatch();
-  const router = useRouter();
-  const handleLogout = async () => {
-    await dispatch(userLogout());
-    router.push("/supervisor/dashboard");
-  };
+const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const user = verifyUser();
 
   // user initials
+  console.log(user);
   const firstNameInitial = user?.firstName[0];
   const lastNameInitial = user?.lastName[0];
 
@@ -31,7 +26,10 @@ const Navbar = ({ handleToggle, toggleDrawer }) => {
         <nav className="bg-themeColor  px-4 lg:px-6 py-2.5 ">
           <div className="flex flex-wrap justify-between items-center">
             <div className="flex justify-start items-center">
-              <button className="hidden md:block" onClick={handleToggle}>
+              <button
+                className="hidden md:block"
+                onClick={console.log("clicked")}
+              >
                 <FaBars className="text-white mx-2" />
               </button>
               <button className="block md:hidden" onClick={toggleDrawer}>

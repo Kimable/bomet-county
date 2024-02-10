@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
-import AdminModel from "@/backend/models/Admin";
 import connectDb from "@/backend/middleware/db";
+import UserModel from "@/backend/models/User";
 require("dotenv").config();
 
 const SECRET_KEY = process.env.SECRET_KEY;
@@ -25,7 +25,7 @@ const adminRegisterHandler = async (request) => {
     const { firstName, lastName, email, password } = await request.json();
 
     // Create a new admin
-    const newAdmin = new AdminModel({
+    const newUser = new UserModel({
       firstName,
       lastName,
       email,
@@ -33,14 +33,14 @@ const adminRegisterHandler = async (request) => {
     });
 
     // Save the new admin to the database
-    await newAdmin.save();
+    await newUser.save();
 
     // Create a payload for the JWT token
     const payload = {
-      adminId: newAdmin._id,
-      firstName: newAdmin.firstName,
-      email: newAdmin.email,
-      isAdmin: newAdmin.isAdmin,
+      adminId: newUser._id,
+      firstName: newUser.firstName,
+      email: newUser.email,
+      isAdmin: newUser.isAdmin,
     };
 
     // Generate and sign the JWT token
@@ -55,7 +55,7 @@ const adminRegisterHandler = async (request) => {
       {
         message: "Admin registered successfully",
         token: token,
-        isAdmin: newAdmin.isAdmin,
+        isAdmin: newUser.isAdmin,
       },
       {
         status: 201,

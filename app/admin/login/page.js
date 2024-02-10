@@ -13,13 +13,15 @@ const Login = () => {
 
   // if admin is already logged in
   useEffect(() => {
-    if (user !== null) {
+    if (user !== null && user.isAdmin === true) {
       return router.push("/admin/dashboard");
+    } else {
+      return router.push("/");
     }
   }, [router]);
 
   const onSubmit = async (data) => {
-    let response = await fetch(`/api/admin/adminlogin`, {
+    let response = await fetch(`/api/userlogin`, {
       method: "POST",
       body: JSON.stringify(data),
     });

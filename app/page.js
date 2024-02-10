@@ -4,11 +4,25 @@ import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { getHostUrl } from "./middlewares/getHostUrl";
+import { verifyUser } from "./middlewares/verifyLoggedInUser";
 
 const Home = () => {
   const router = useRouter();
   const { register, handleSubmit } = useForm();
+
+  const user = verifyUser();
+  useEffect(() => {
+    if (user !== null && user?.isAdmin == true) {
+      return router.push("/admin/dashboard");
+    }
+    if (user !== null && user?.teamLead == true) {
+      return router.push("/supervisor/dashboard");
+    }
+
+    if (user !== null) {
+      return router.push("/employee/dashboard");
+    }
+  }, [user]);
 
   const onSubmit = async (data) => {
     let response = await fetch(`/api/user/userlogin`, {
@@ -18,13 +32,19 @@ const Home = () => {
 
     const responseData = await response.json();
     console.log(responseData);
-    const { token, teamLead } = responseData;
+    const { token, teamLead, isAdmin } = responseData;
 
     // Store the token and teamLead status in the local storage
     localStorage.setItem("token", token);
     localStorage.setItem("teamLead", teamLead);
-
-    router.push("/employee/dashboard");
+    localStorage.setItem("isAdmin", isAdmin);
+    if (isAdmin == true) {
+      router.push("/admin/dashboard");
+    } else if (teamLead == true) {
+      router.push("/supervisor/dashboard");
+    } else {
+      router.push("/employee/dashboard");
+    }
   };
 
   return (
@@ -105,14 +125,6 @@ const Home = () => {
                   Sign in
                 </button>
               </form>
-              <div className="w-full">
-                <Link
-                  href="/admin/login"
-                  className="my-2 w-full text-white bg-themeColor focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-                >
-                  Go to admin login page
-                </Link>
-              </div>
             </div>
           </div>
           <div className="hidden lg:block lg:w-1/2 content bg-themeColor">

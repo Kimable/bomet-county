@@ -8,6 +8,7 @@ import { Suspense, useState } from "react";
 import { ShowToastContext } from "./context/ShowToastContext";
 import { ParentFolderIdContext } from "./context/ParentFolderIdContext";
 import Storage from "./components/Storage/Storage";
+import Navbar from "../components/navbar/page";
 function MyApp({ children }) {
   const [showToastMsg, setShowToastMsg] = useState();
   const [parentFolderId, setParentFolderId] = useState();
@@ -17,6 +18,7 @@ function MyApp({ children }) {
       value={{ parentFolderId, setParentFolderId }}
     >
       <ShowToastContext.Provider value={{ showToastMsg, setShowToastMsg }}>
+        <Navbar />
         <div className="flex">
           <SideNavBar />
           <Suspense>
@@ -28,6 +30,7 @@ function MyApp({ children }) {
             </div>
           </Suspense>
         </div>
+
         {showToastMsg ? <Toast msg={showToastMsg} /> : null}
       </ShowToastContext.Provider>
     </ParentFolderIdContext.Provider>
