@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
@@ -9,6 +9,7 @@ import { verifyUser } from "./middlewares/verifyLoggedInUser";
 const Home = () => {
   const router = useRouter();
   const { register, handleSubmit } = useForm();
+  const [loginStatus, setLoginStatus] = useState(false);
 
   const user = verifyUser();
   useEffect(() => {
@@ -25,6 +26,7 @@ const Home = () => {
   }, [user]);
 
   const onSubmit = async (data) => {
+    setLoginStatus(true);
     let response = await fetch(`/api/user/userlogin`, {
       method: "POST",
       body: JSON.stringify(data),
@@ -45,6 +47,7 @@ const Home = () => {
     } else {
       router.push("/employee/dashboard");
     }
+    setLoginStatus(false);
   };
 
   return (
@@ -118,12 +121,22 @@ const Home = () => {
                     Forgot password?
                   </a>
                 </div>
-                <button
-                  type="submit"
-                  className="my-2 w-full text-white bg-themeColor focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-                >
-                  Sign in
-                </button>
+                {loginStatus === true ? (
+                  <button
+                    disabled={true}
+                    type="submit"
+                    className="my-2 w-full text-white bg-gray-500 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                  >
+                    Logging in ...
+                  </button>
+                ) : (
+                  <button
+                    type="submit"
+                    className="my-2 w-full text-white bg-themeColor focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                  >
+                    Sign in
+                  </button>
+                )}
               </form>
             </div>
           </div>

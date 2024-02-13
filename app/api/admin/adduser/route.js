@@ -5,30 +5,12 @@ import UserModel from "@/backend/models/User";
 const addUserHandler = async (request) => {
   try {
     // Extract the field values from the request body
-    const {
-      firstName,
-      lastName,
-      userEmail,
-      userPassword,
-      teamLead,
-      teamLeadEmail,
-      department,
-      shift,
-    } = await request.json();
+    const employee = await request.json();
 
-    console.log("Received data:", {
-      firstName,
-      lastName,
-      userEmail,
-      userPassword,
-      teamLead,
-      teamLeadEmail,
-      department,
-      shift,
-    });
+    console.log("Received data:", employee);
 
     // Check if the email already exists in the database
-    const existingUser = await UserModel.findOne({ email: userEmail });
+    const existingUser = await UserModel.findOne({ email: employee.email });
     if (existingUser) {
       return NextResponse.json(
         {
@@ -41,16 +23,7 @@ const addUserHandler = async (request) => {
     }
 
     // Create a new instance of the 'User' model and assign the field values
-    const newUser = new UserModel({
-      firstName,
-      lastName,
-      email: userEmail,
-      password: userPassword,
-      teamLead,
-      teamLeadEmail,
-      department,
-      shift,
-    });
+    const newUser = new UserModel(employee);
 
     // Save the new User to the database
     const savedUser = await newUser.save();

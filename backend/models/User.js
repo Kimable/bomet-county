@@ -3,10 +3,9 @@ import mongoose from "mongoose";
 const userSchema = new mongoose.Schema({
   // User image URL or base64 data
   firstName: { type: String, required: true },
-  middleName: { type: String },
   lastName: { type: String, required: true },
+  middleName: { type: String },
   email: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
   teamLead: { type: Boolean, default: false },
   isAdmin: { type: Boolean, default: false },
   teamLeadEmail: { type: String },
@@ -16,7 +15,11 @@ const userSchema = new mongoose.Schema({
   IDNumber: { type: String },
   phoneNo: { type: String },
   employmentNo: { type: String },
+  nextOfKin: { type: String },
+  nextOfKinPhone: { type: String },
+  nextOfKinRelationship: { type: String },
   avatar: { type: String },
+  password: { type: String, required: true },
   // Add other fields as needed
 });
 

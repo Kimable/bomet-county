@@ -76,7 +76,7 @@ const CustomSidebar = ({ userRole, toggle, pathname }) => {
               component={<Link href="/admin/adduser" />}
             >
               {" "}
-              Add user{" "}
+              Add Employee{" "}
             </MenuItem>
             <MenuItem
               icon={<FiUsers />}
@@ -85,7 +85,7 @@ const CustomSidebar = ({ userRole, toggle, pathname }) => {
               component={<Link href="/admin/users" />}
             >
               {" "}
-              Users{" "}
+              Employees{" "}
             </MenuItem>
             <MenuItem
               icon={<FiFile />}

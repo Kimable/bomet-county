@@ -30,15 +30,18 @@ function CreateFolderModal({ closeModal }) {
   }
 
   const db = getFirestore(app);
+
   const onCreate = async () => {
     setLoading(true);
     console.log(folderName);
+
     await setDoc(doc(db, "Folders", docId), {
       name: folderName,
       id: docId,
       createBy: user.email,
       parentFolderId: id,
     });
+
     setLoading(false);
     closeModal(true);
     setShowToastMsg("Folder Created!");
