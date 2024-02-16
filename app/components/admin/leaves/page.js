@@ -55,112 +55,120 @@ const LeavesList = ({ leaves }) => {
 
   return (
     <>
-      {updatedLeaves  && updatedLeaves.map((leave, index) => {
-        // Get the appropriate icon component and colors from the mapping
-        const {
-          icon: IconComponent,
-          color,
-          bgColor,
-        } = iconMapping[leave.status] || {
-          icon: FiInfo,
-          color: "",
-          bgColor: "",
-        };
+      {updatedLeaves &&
+        updatedLeaves.map((leave, index) => {
+          // Get the appropriate icon component and colors from the mapping
+          const {
+            icon: IconComponent,
+            color,
+            bgColor,
+          } = iconMapping[leave.status] || {
+            icon: FiInfo,
+            color: "",
+            bgColor: "",
+          };
 
-        // Format fromDate and toDate
-        const formattedFromDate = new Date(leave.fromDate).toLocaleDateString(
-          "en-US",
-          {
-            year: "numeric",
-            month: "short",
-            day: "numeric",
-          }
-        );
-        const formattedToDate = new Date(leave.toDate).toLocaleDateString(
-          "en-US",
-          {
-            year: "numeric",
-            month: "short",
-            day: "numeric",
-          }
-        );
+          // Format fromDate and toDate
+          const formattedFromDate = new Date(leave.fromDate).toLocaleDateString(
+            "en-US",
+            {
+              year: "numeric",
+              month: "short",
+              day: "numeric",
+            }
+          );
+          const formattedToDate = new Date(leave.toDate).toLocaleDateString(
+            "en-US",
+            {
+              year: "numeric",
+              month: "short",
+              day: "numeric",
+            }
+          );
 
-        const isHovered = hoveredIndex === index;
+          const isHovered = hoveredIndex === index;
 
-        return (
-          <div
-            key={index}
-            className={`cursor-pointer relative mx-2 my-2 rounded-lg p-3 border border-gray-300 ${color} ${
-              isHovered ? "bg-opacity-75" : ""
-            }`}
-            onMouseEnter={() => setHoveredIndex(index)}
-            onMouseLeave={() => setHoveredIndex(-1)}
-          >
-            <div className={` card p-3 rounded-lg `}>
-              {/* leave history start  */}
-              <div className="md:w-[300px] w-full">
-                <div className="flex justify-between mb-3">
-                  <div className="flex items-center">
+          return (
+            <div
+              key={index}
+              className={`cursor-pointer relative mx-2 my-2 rounded-lg p-3 border border-gray-300 ${color} ${
+                isHovered ? "bg-opacity-75" : ""
+              }`}
+              onMouseEnter={() => setHoveredIndex(index)}
+              onMouseLeave={() => setHoveredIndex(-1)}
+            >
+              <div className={` card p-3 rounded-lg `}>
+                {/* leave history start  */}
+                <div className="md:w-[300px] w-full">
+                  <div className="flex justify-between mb-3">
+                    <div className="flex items-center">
+                      <div
+                        className={`p-2 rounded-full text-center ${bgColor} text-white`}
+                      >
+                        <IconComponent /> {/* Render the dynamic icon */}
+                      </div>
+                      <div className="mx-2"> {leave._id.firstName} </div>
+                    </div>
                     <div
-                      className={`p-2 rounded-full text-center ${bgColor} text-white`}
+                      className={`shadow-lg p-2 rounded-full text-xs font-bold text-center text-white ${bgColor} `}
                     >
-                      <IconComponent /> {/* Render the dynamic icon */}
+                      {leave.status}
                     </div>
-                    <div className="mx-2"> {leave.userId.firstName} </div>
                   </div>
-                  <div
-                    className={`shadow-lg p-2 rounded-full text-xs font-bold text-center text-white ${bgColor} `}
-                  >
-                    {leave.status}
+                  <div className="text-xs font-light my-2">
+                    {" "}
+                    {leave.reason}{" "}
+                  </div>
+                  <div className="flex justify-between">
+                    <div className="mb-2">
+                      <div className="text-xs mb-2 font-light text-gray-700">
+                        {" "}
+                        From Date{" "}
+                      </div>
+                      <div className="text-xs"> {formattedFromDate} </div>
+                    </div>
+                    <div className="mb-2">
+                      <div className="text-xs mb-2 font-light text-gray-700">
+                        {" "}
+                        To Date{" "}
+                      </div>
+                      <div className="text-xs">{formattedToDate}</div>
+                    </div>
                   </div>
                 </div>
-                <div className="text-xs font-light my-2"> {leave.reason} </div>
-                <div className="flex justify-between">
-                  <div className="mb-2">
-                    <div className="text-xs mb-2 font-light text-gray-700">
-                      {" "}
-                      From Date{" "}
-                    </div>
-                    <div className="text-xs"> {formattedFromDate} </div>
+                {/* leave history end  */}
+                {isHovered && (
+                  <div className=" absolute inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
+                    <button
+                      className=" mx-1 bg-themeColor px-4 py-2 text-white rounded"
+                      onClick={() =>
+                        handleApproveOrReject(leave._id, "Approved")
+                      }
+                    >
+                      <span className="hidden md:block"> Approve</span>
+                      <span className="block md:hidden">
+                        {" "}
+                        <FiCheck />
+                      </span>
+                    </button>
+                    <button
+                      className="mx-1 bg-redColor px-4 py-2 text-white rounded"
+                      onClick={() =>
+                        handleApproveOrReject(leave._id, "Rejected")
+                      }
+                    >
+                      <span className="hidden md:block"> Reject </span>
+                      <span className="block md:hidden">
+                        {" "}
+                        <FiX />{" "}
+                      </span>
+                    </button>
                   </div>
-                  <div className="mb-2">
-                    <div className="text-xs mb-2 font-light text-gray-700">
-                      {" "}
-                      To Date{" "}
-                    </div>
-                    <div className="text-xs">{formattedToDate}</div>
-                  </div>
-                </div>
+                )}
               </div>
-              {/* leave history end  */}
-              {isHovered && (
-                <div className=" absolute inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
-                  <button
-                    className=" mx-1 bg-themeColor px-4 py-2 text-white rounded"
-                    onClick={() => handleApproveOrReject(leave._id, "Approved")}
-                  >
-                    <span className="hidden md:block"> Approve</span>
-                    <span className="block md:hidden">
-                      {" "}
-                      <FiCheck />
-                    </span>
-                  </button>
-                  <button
-                    className="mx-1 bg-redColor px-4 py-2 text-white rounded"
-                    onClick={() => handleApproveOrReject(leave._id, "Rejected")}
-                  >
-                    <span className="hidden md:block"> Reject </span>
-                    <span className="block md:hidden">
-                      {" "}
-                      <FiX />{" "}
-                    </span>
-                  </button>
-                </div>
-              )}
             </div>
-          </div>
-        );
-      })}
+          );
+        })}
     </>
   );
 };

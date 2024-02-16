@@ -80,20 +80,20 @@ const CustomSidebar = ({ userRole, toggle, pathname }) => {
             </MenuItem>
             <MenuItem
               icon={<FiUsers />}
-              active={activeItem === "/admin/users"}
-              onClick={() => handleMenuItemClick("/admin/users")}
-              component={<Link href="/admin/users" />}
+              active={activeItem === "/admin/employees"}
+              onClick={() => handleMenuItemClick("/admin/employees")}
+              component={<Link href="/admin/employees" />}
             >
               {" "}
               Employees{" "}
             </MenuItem>
             <MenuItem
               icon={<FiFile />}
-              active={activeItem === "/admin/report"}
-              onClick={() => handleMenuItemClick("/admin/report")}
-              component={<Link href="/admin/report" />}
+              active={activeItem === "/admin/users"}
+              onClick={() => handleMenuItemClick("/admin/users")}
+              component={<Link href="/admin/users" />}
             >
-              Attendance Report
+              Employees Attendance
             </MenuItem>
             <SubMenu icon={<FiClock />} label="Shift Management">
               <MenuItem

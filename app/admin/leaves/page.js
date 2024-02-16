@@ -17,8 +17,10 @@ const Leaves = () => {
     // Dispatch the action to fetch leaves
     dispatch(fetchLeaves())
       .then((response) => {
+        console.log(response);
         // Assuming response.data is an array of leaves
         setLeaves(response.data.allLeaves);
+        console.log(leaves);
       })
       .catch((error) => {
         console.error("Error fetching leaves:", error);

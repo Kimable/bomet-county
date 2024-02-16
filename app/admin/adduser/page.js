@@ -224,7 +224,7 @@ const AddUser = () => {
                 Email
               </label>
               <input
-                type="email"
+                type="text"
                 id="email"
                 {...register("email")}
                 className="bg-card border border-card text-textColor text-sm rounded-lg focus:outline-none block w-full p-2.5 "
