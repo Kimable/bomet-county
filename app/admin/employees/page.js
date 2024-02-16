@@ -8,8 +8,10 @@ import CurrentDate from "@/app/components/common/currentdate/page";
 const Employees = async () => {
   let employees = [];
 
+  const url = process.env.URL || process.env.VERCEL_URL;
+
   const fetchUsers = async () => {
-    const response = await fetch(`${process.env.URL}/api/admin/fetchAllUsers`);
+    const response = await fetch(`${url}/api/admin/fetchAllUsers`);
 
     let users = await response.json();
     return users.users;

@@ -33,12 +33,7 @@ export default function Page() {
         <div className="mx-2">
           <div className="card rounded-lg shadow bg-card p-2 my-2">
             {/* card header start */}
-            <div className="flex justify-between items-center my-2">
-              <BreadCrumb text="Employee Details" />
-              <button className="flex items-center text-white text-sm text-center bg-themeColor p-2 rounded-lg">
-                <FaDownload className="text-white mx-2" /> Download Info
-              </button>
-            </div>
+
             {/* card header ends  */}
 
             {/* basic info start  */}
