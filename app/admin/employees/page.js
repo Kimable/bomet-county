@@ -1,23 +1,24 @@
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import SuperuserLayout from "@/app/components/layouts/superuserlayout/page";
 import BreadCrumb from "@/app/components/common/breadcrumbs/page";
 import { FiCalendar } from "react-icons/fi";
 import CurrentDate from "@/app/components/common/currentdate/page";
 
-const Employees = async () => {
-  let employees = [];
+const Employees = () => {
+  let [employees, setEmployees] = useState([]);
 
-  const url = process.env.URL || process.env.VERCEL_URL;
-
-  const fetchUsers = async () => {
-    const response = await fetch(`${url}/api/admin/fetchAllUsers`);
-
-    let users = await response.json();
-    return users.users;
-  };
-
-  employees = await fetchUsers();
+  useEffect(() => {
+    setEmployees([]);
+    fetch(`/api/admin/fetchAllUsers`)
+      .then((res) => {
+        return res.json();
+      })
+      .then((e) => {
+        setEmployees(e.users);
+      });
+  }, []);
 
   console.log(employees);
   return (
@@ -32,6 +33,7 @@ const Employees = async () => {
         {employees.length === 0 ? (
           <h2 className="text-center m-5">Loading...</h2>
         ) : (
+          employees.length !== 0 &&
           employees.map((employee) => {
             return (
               <div
