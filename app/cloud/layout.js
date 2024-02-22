@@ -22,8 +22,8 @@ function MyApp({ children }) {
         <div className="flex">
           <SideNavBar />
           <Suspense>
-            <div className="grid grid-cols-1 md:grid-cols-3 w-full">
-              <div className="col-span-2">{children}</div>
+            <div className="grid grid-cols-1 md:grid-cols-4 w-full">
+              <div className="col-span-3">{children}</div>
               <div className="bg-white p-5 order-first md:order-last">
                 <Storage />
               </div>
