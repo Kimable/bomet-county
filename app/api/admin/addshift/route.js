@@ -123,7 +123,7 @@ const addShiftHandler = async (request) => {
     };
 
     // Create a new instance of the 'Shift' model and assign the calculated shiftData
-    const newShift = new ShiftModel(shiftData);
+    const newShift = await new ShiftModel(shiftData);
 
     // Save the new Shift to the database
     const savedShift = await newShift.save();

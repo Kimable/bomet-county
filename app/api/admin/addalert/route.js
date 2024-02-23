@@ -10,7 +10,7 @@ const addAlertHandler = async (request) => {
     console.log("Received data:", { title, message, status });
 
     // Create a new instance of the 'Alert' model and assign the field values
-    const newAlert = new AlertModel({
+    const newAlert = await new AlertModel({
       title,
       message,
       status,

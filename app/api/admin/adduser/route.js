@@ -23,7 +23,7 @@ const addUserHandler = async (request) => {
     }
 
     // Create a new instance of the 'User' model and assign the field values
-    const newUser = new UserModel(employee);
+    const newUser = await new UserModel(employee);
 
     // Save the new User to the database
     const savedUser = await newUser.save();

@@ -25,7 +25,7 @@ const adminRegisterHandler = async (request) => {
     const { firstName, lastName, email, password } = await request.json();
 
     // Create a new admin
-    const newUser = new UserModel({
+    const newUser = await new UserModel({
       firstName,
       lastName,
       email,

@@ -4,8 +4,6 @@ import AdminModel from "@/backend/models/Admin";
 import connectDb from "@/backend/middleware/db";
 require("dotenv").config();
 
-const SECRET_KEY = process.env.SECRET_KEY;
-
 const adminLoginHandler = async (request) => {
   try {
     // Extract the login credentials from the request body

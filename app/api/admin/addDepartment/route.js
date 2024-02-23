@@ -10,7 +10,7 @@ const addDepartmentHandler = async (request) => {
     console.log("Received data:", { departmentName });
 
     // Create a new instance of the 'Alert' model and assign the field values
-    const newDepartment = new DepartmentModel({
+    const newDepartment = await new DepartmentModel({
       departmentName,
       headOfDepartment,
     });
