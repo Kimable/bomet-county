@@ -32,7 +32,10 @@ export default function Home() {
     }
     const loggedUser = verifyUser(token);
 
-    console.log(loggedUser);
+    if (loggedUser === null) {
+      localStorage.setItem("token", "");
+      return router.push("/");
+    }
     setUser(loggedUser);
     getFolderList(loggedUser);
     getFileList(loggedUser);

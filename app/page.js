@@ -20,6 +20,10 @@ const Home = () => {
       return router.push("/");
     }
     const loggedUser = verifyUser(token);
+    if (loggedUser === null) {
+      localStorage.setItem("token", "");
+      return router.push("/");
+    }
     setUser(loggedUser);
   }, []);
 

@@ -18,6 +18,11 @@ function CreatedFiles() {
       return router.push("/");
     }
     const loggedUser = verifyUser(token);
+    if (loggedUser === null) {
+      localStorage.setItem("token", "");
+      return router.push("/");
+    }
+
     getFiles(loggedUser.userId);
     setUser(loggedUser);
   }, []);
