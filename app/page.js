@@ -26,20 +26,18 @@ const Home = () => {
       localStorage.setItem("token", "");
       return router.push("/");
     }
-    setUser(loggedUser);
-  }, []);
 
-  useEffect(() => {
-    if (user !== null && user?.isAdmin == true) {
+    if (loggedUser?.isAdmin == true) {
       return router.push("/admin/dashboard");
     }
-    if (user !== null && user?.teamLead == true) {
+    if (loggedUser?.teamLead == true) {
       return router.push("/supervisor/dashboard");
     }
 
-    if (user !== null) {
+    if (loggedUser !== null) {
       return router.push("/employee/dashboard");
     }
+    setUser(loggedUser);
   }, []);
 
   const onSubmit = async (data) => {
