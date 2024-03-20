@@ -16,11 +16,18 @@ function CreateFolderModal({ closeModal }) {
 
   const [loading, setLoading] = useState(false);
 
-  const user = verifyUser();
-  let router = useRouter();
-  if (user === null) {
-    return router.push("/");
-  }
+  // Get current user
+  const [user, setUser] = useState("");
+  const router = useRouter();
+
+  useEffect(() => {
+    let token = localStorage.getItem("token");
+    if (token == "" || token == null) {
+      return router.push("/");
+    }
+    const loggedUser = verifyUser(token);
+    setUser(loggedUser);
+  }, []);
 
   const params = useSearchParams();
   let id = params.get("id");

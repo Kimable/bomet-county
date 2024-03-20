@@ -1,17 +1,24 @@
 import { verifyUser } from "@/app/middlewares/verifyLoggedInUser";
 import Image from "next/image";
 import { redirect } from "next/navigation";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 function UserInfo() {
-  const user = verifyUser();
-  if (user === null) {
-    return redirect("/");
-  }
+  // Get current user
+  const [user, setUser] = useState("");
+
+  useEffect(() => {
+    let token = localStorage.getItem("token");
+    if (token == "" || token == null) {
+      return router.push("/");
+    }
+    const loggedUser = verifyUser(token);
+    setUser(loggedUser);
+  }, []);
 
   return (
     <div>
-      {user ? (
+      {user !== "" ? (
         <div className="flex gap-2 items-center">
           {/* <Image
             src={user.image}

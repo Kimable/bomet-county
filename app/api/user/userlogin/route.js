@@ -42,6 +42,8 @@ const userLoginHandler = async (request) => {
       lastName: existingUser.lastName,
       email: existingUser.email,
       teamLead: existingUser.teamLead,
+      phoneNo: existingUser.phoneNo,
+      department: existingUser.department,
       isAdmin: existingUser.isAdmin,
     };
 

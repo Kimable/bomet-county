@@ -11,7 +11,18 @@ const Home = () => {
   const { register, handleSubmit } = useForm();
   const [loginStatus, setLoginStatus] = useState(false);
 
-  const user = verifyUser();
+  // Get current user
+  const [user, setUser] = useState("");
+
+  useEffect(() => {
+    let token = localStorage.getItem("token");
+    if (token == "" || token == null) {
+      return router.push("/");
+    }
+    const loggedUser = verifyUser(token);
+    setUser(loggedUser);
+  }, []);
+
   useEffect(() => {
     if (user !== null && user?.isAdmin == true) {
       return router.push("/admin/dashboard");

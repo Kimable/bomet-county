@@ -10,7 +10,9 @@ import { ShowToastContext } from "../../context/ShowToastContext";
 function FileItem({ file }) {
   const db = getFirestore(app);
   const image = "/" + file.type + ".png";
+
   const { showToastMsg, setShowToastMsg } = useContext(ShowToastContext);
+
   const deleteFile = async (file) => {
     await deleteDoc(doc(db, "files", file.id.toString())).then((resp) => {
       setShowToastMsg("File Deleted!!!");

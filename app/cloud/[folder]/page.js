@@ -18,12 +18,16 @@ import FolderList from "../components/Folder/FolderList";
 import { ShowToastContext } from "../context/ShowToastContext";
 import FileList from "../components/File/FileList";
 import { verifyUser } from "@/app/middlewares/verifyLoggedInUser";
+import CreatedFiles from "../components/createdFiles/CreatedFiles";
 
 function FolderDetails() {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const [folderList, setFolderList] = useState([]);
   const [fileList, setFileList] = useState([]);
+  const [user, setUser] = useState("");
+  let router = useRouter();
+
+  const db = getFirestore(app);
 
   let id = searchParams.get("id");
 
@@ -31,24 +35,22 @@ function FolderDetails() {
     id = 0;
   }
 
-  const user = verifyUser();
-
-  if (user === null) {
-    return router.push("/");
-  }
+  useEffect(() => {
+    let token = localStorage.getItem("token");
+    if (token == "" || token == null) {
+      return router.push("/");
+    }
+    const loggedUser = verifyUser(token);
+    getFolderList(loggedUser);
+    getFileList(loggedUser);
+    setUser(loggedUser);
+  }, []);
 
   const { parentFolderId, setParentFolderId } = useContext(
     ParentFolderIdContext
   );
 
   const { showToastMsg, setShowToastMsg } = useContext(ShowToastContext);
-
-  const db = getFirestore(app);
-
-  useEffect(() => {
-    getFolderList();
-    getFileList();
-  }, []);
 
   const deleteFolder = async () => {
     await deleteDoc(doc(db, "Folders", id)).then((resp) => {
@@ -57,29 +59,28 @@ function FolderDetails() {
     });
   };
 
-  const getFolderList = async () => {
+  const getFolderList = async (loggedUser) => {
     setFolderList([]);
     const q = query(
       collection(db, "Folders"),
       where("parentFolderId", "==", id),
-      where("createBy", "==", user?.email)
+      where("createBy", "==", loggedUser?.email)
     );
 
     onSnapshot(q, (snapshot) => {
       snapshot.docChanges().forEach((change) => {
-        console.log(change.doc.id, " => ", change.doc.data());
         setFolderList((folderList) => [...folderList, change.doc.data()]);
       });
     });
     console.log(folderList);
   };
 
-  const getFileList = async () => {
+  const getFileList = async (loggedUser) => {
     setFileList([]);
     const q = query(
       collection(db, "files"),
       where("parentFolderId", "==", id),
-      where("createdBy", "==", user?.email)
+      where("createdBy", "==", loggedUser?.email)
     );
 
     onSnapshot(q, (snapshot) => {
@@ -123,6 +124,7 @@ function FolderDetails() {
         </h2>
       )}
 
+      <CreatedFiles />
       <FileList fileList={fileList} />
     </div>
   );

@@ -40,6 +40,8 @@ const adminLoginHandler = async (request) => {
       adminId: existingAdmin._id,
       firstName: existingAdmin.firstName,
       email: existingAdmin.email,
+      phoneNo: existingAdmin.phoneNo,
+      department: existingAdmin.department,
       isAdmin: existingAdmin.isAdmin,
     };
 

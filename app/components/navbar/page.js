@@ -1,8 +1,6 @@
 "use client";
-import React, { useState } from "react";
-import { userLogout } from "@/store/reducer/common/logoutReducer";
+import React, { useEffect, useState } from "react";
 import { FaBars, FaSearch } from "react-icons/fa";
-import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import { FiBell, FiLogOut, FiCloud } from "react-icons/fi";
 import Image from "next/image";
@@ -10,22 +8,32 @@ import Link from "next/link";
 import { verifyUser } from "@/app/middlewares/verifyLoggedInUser";
 
 const Navbar = ({ handleToggle, toggleDrawer }) => {
-  const dispatch = useDispatch();
   const router = useRouter();
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    setIsAdmin(localStorage.getItem("isAdmin"));
+  }, []);
+
   const handleLogout = async () => {
-    await dispatch(userLogout());
-    router.push("/supervisor/dashboard");
+    localStorage.setItem("token", "");
+
+    return router.push("/");
   };
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const user = verifyUser();
+  const [user, setUser] = useState("");
 
-  // user initials
-  const firstNameInitial = user?.firstName[0];
-  const lastNameInitial = user?.lastName[0];
+  useEffect(() => {
+    let token = localStorage.getItem("token");
+    if (token == "" || token == null) {
+      return router.push("/");
+    }
+    const loggedUser = verifyUser(token);
+    setUser(loggedUser);
+  }, []);
 
   return (
     <div>
-      {" "}
       {/* for header  */}
       <header>
         <nav className="bg-themeColor  px-4 lg:px-6 py-2.5 ">
@@ -52,7 +60,7 @@ const Navbar = ({ handleToggle, toggleDrawer }) => {
                 className="flex items-center py-2 px-4 text-xl text-white"
                 href="/cloud"
               >
-                DOCUMENTS <FiCloud className="mx-2" />
+                My Documents
               </Link>
 
               <button
@@ -72,8 +80,8 @@ const Navbar = ({ handleToggle, toggleDrawer }) => {
               >
                 <span className="sr-only">Open user menu</span>
                 <div className="text-themeColor rounded-full p-2 bg-card">
-                  {firstNameInitial}
-                  {lastNameInitial}
+                  {user && user?.firstName[0]}
+                  {user && user?.lastName[0]}
                 </div>
               </button>
 
@@ -98,7 +106,7 @@ const Navbar = ({ handleToggle, toggleDrawer }) => {
                 >
                   <li>
                     <a
-                      href="#"
+                      href={isAdmin ? "/admin/profile" : "/employee/profile"}
                       className="block py-2 px-4 text-sm hover:bg-gray-100 "
                     >
                       Profile
@@ -108,6 +116,7 @@ const Navbar = ({ handleToggle, toggleDrawer }) => {
                     <a
                       href="#"
                       className="block py-2 px-4 text-sm hover:bg-gray-100 "
+                      onClick={handleLogout}
                     >
                       Sign Out
                     </a>

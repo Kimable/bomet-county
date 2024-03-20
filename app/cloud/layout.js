@@ -9,7 +9,8 @@ import { ShowToastContext } from "./context/ShowToastContext";
 import { ParentFolderIdContext } from "./context/ParentFolderIdContext";
 import Storage from "./components/Storage/Storage";
 import Navbar from "../components/navbar/page";
-function MyApp({ children }) {
+
+function DocumentsLayout({ children }) {
   const [showToastMsg, setShowToastMsg] = useState();
   const [parentFolderId, setParentFolderId] = useState();
 
@@ -37,4 +38,4 @@ function MyApp({ children }) {
   );
 }
 
-export default MyApp;
+export default DocumentsLayout;

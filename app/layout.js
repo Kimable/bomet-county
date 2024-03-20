@@ -1,6 +1,7 @@
 import "./globals.css";
 import { Inter } from "next/font/google";
 import { Providers } from "@/store/provider";
+import "quill/dist/quill.core.css";
 
 const inter = Inter({ subsets: ["latin"] });
 

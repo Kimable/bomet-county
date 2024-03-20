@@ -60,23 +60,14 @@ function FolderList({ folderList, isBig = true }) {
           </span>
         </h2>
       ) : null}
-      {isBig ? (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 mt-3 gap-4">
-          {folderList.map((item, index) => (
-            <div key={index} onClick={() => onFolderClick(index, item)}>
-              <FolderItem folder={item} />
-            </div>
-          ))}
-        </div>
-      ) : (
-        <div>
-          {folderList.map((item, index) => (
-            <div key={index} onClick={() => onFolderClick(index, item)}>
-              <FolderItemSmall folder={item} />
-            </div>
-          ))}
-        </div>
-      )}
+
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 mt-3 gap-4">
+        {folderList.map((item, index) => (
+          <div key={index} onClick={() => onFolderClick(index, item)}>
+            <FolderItem folder={item} />
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

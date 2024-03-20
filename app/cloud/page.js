@@ -16,31 +16,36 @@ import {
 } from "firebase/firestore";
 import { app } from "@/app/Config/FirebaseConfig";
 import { verifyUser } from "@/app/middlewares/verifyLoggedInUser";
+import CreatedFiles from "./components/createdFiles/CreatedFiles";
 
 export default function Home() {
-  const router = useRouter();
   const [folderList, setFolderList] = useState([]);
   const [fileList, setFileList] = useState([]);
-  const user = verifyUser();
-
-  if (user === null) {
-    return router.push("/");
-  }
-
   const db = getFirestore(app);
+  const [user, setUser] = useState("");
+  const router = useRouter();
 
   useEffect(() => {
-    setFolderList([]);
-    getFolderList();
-    getFileList();
+    let token = localStorage.getItem("token");
+    if (token == "" || token == null) {
+      return router.push("/");
+    }
+    const loggedUser = verifyUser(token);
+
+    console.log(loggedUser);
+    setUser(loggedUser);
+    getFolderList(loggedUser);
+    getFileList(loggedUser);
   }, []);
 
-  const getFolderList = async () => {
+  useEffect(() => {}, []);
+
+  const getFolderList = async (loggedUser) => {
     setFolderList([]);
     const q = query(
       collection(db, "Folders"),
       where("parentFolderId", "==", 0),
-      where("createBy", "==", user?.email)
+      where("createBy", "==", loggedUser?.email)
     );
 
     const querySnapshot = onSnapshot(q, (snapshot) => {
@@ -51,12 +56,12 @@ export default function Home() {
     });
   };
 
-  const getFileList = async () => {
+  const getFileList = async (loggedUser) => {
     setFileList([]);
     const q = query(
       collection(db, "files"),
       where("parentFolderId", "==", 0),
-      where("createdBy", "==", user?.email)
+      where("createdBy", "==", loggedUser?.email)
     );
 
     const querySnapshot = onSnapshot(q, (snapshot) => {
@@ -69,6 +74,7 @@ export default function Home() {
     <div className="p-5">
       <SearchBar />
       <FolderList folderList={folderList} />
+      <CreatedFiles />
       <FileList fileList={fileList} />
     </div>
   );

@@ -269,8 +269,8 @@ const CustomSidebar = ({ userRole, toggle, pathname }) => {
             <MenuItem
               icon={<FiUser />}
               active={activeItem === `/userdetail`}
-              onClick={() => handleMenuItemClick(`/userdetail`)}
-              component={<Link href={`/userdetail`} />}
+              onClick={() => handleMenuItemClick(`/employee/profile`)}
+              component={<Link href={`/employee/profile`} />}
             >
               {" "}
               Profile{" "}

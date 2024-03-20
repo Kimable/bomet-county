@@ -6,14 +6,17 @@ import { FiUserCheck } from "react-icons/fi";
 import { useRouter } from "next/navigation";
 import { verifyUser } from "@/app/middlewares/verifyLoggedInUser";
 const Dashboard = () => {
+  let [user, setUser] = useState("");
   let router = useRouter();
-  const user = verifyUser();
 
   useEffect(() => {
-    if (user == null) {
-      return router.push("/admin/login");
+    let token = localStorage.getItem("token");
+    if (token == "" || token == null) {
+      return router.push("/");
     }
-  }, [router]);
+    const loggedUser = verifyUser(token);
+    setUser(loggedUser);
+  }, []);
 
   return (
     user !== null && (

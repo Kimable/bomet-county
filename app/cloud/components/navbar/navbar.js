@@ -1,6 +1,5 @@
 "use client";
 import React, { useState } from "react";
-import { userLogout } from "@/store/reducer/common/logoutReducer";
 import { FaBars, FaSearch } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
@@ -11,16 +10,22 @@ import { verifyUser } from "@/app/middlewares/verifyLoggedInUser";
 
 const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const user = verifyUser();
 
-  // user initials
-  console.log(user);
-  const firstNameInitial = user?.firstName[0];
-  const lastNameInitial = user?.lastName[0];
+  // Get current user
+  const [user, setUser] = useState("");
+  const router = useRouter();
+
+  useEffect(() => {
+    let token = localStorage.getItem("token");
+    if (token == "" || token == null) {
+      return router.push("/");
+    }
+    const loggedUser = verifyUser(token);
+    setUser(loggedUser);
+  }, []);
 
   return (
     <div>
-      {" "}
       {/* for header  */}
       <header>
         <nav className="bg-themeColor  px-4 lg:px-6 py-2.5 ">
@@ -70,8 +75,8 @@ const Navbar = () => {
               >
                 <span className="sr-only">Open user menu</span>
                 <div className="text-themeColor rounded-full p-2 bg-card">
-                  {firstNameInitial}
-                  {lastNameInitial}
+                  {user?.firstName[0]}
+                  {user?.lastName[0]}
                 </div>
               </button>
 

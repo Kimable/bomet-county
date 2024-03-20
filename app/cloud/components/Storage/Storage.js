@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import StorageInfo from "./StorageInfo";
 import StorageDetailList from "./StorageDetailList";
 import { verifyUser } from "@/app/middlewares/verifyLoggedInUser";
@@ -6,11 +6,18 @@ import { useRouter } from "next/navigation";
 
 function Storage() {
   const router = useRouter();
+  // Get current user
+  const [user, setUser] = useState("");
 
-  let user = verifyUser();
-  if (user === null) {
-    return router.push("/");
-  }
+  useEffect(() => {
+    let token = localStorage.getItem("token");
+    if (token == "" || token == null) {
+      return router.push("/");
+    }
+    const loggedUser = verifyUser(token);
+    setUser(loggedUser);
+  }, []);
+
   return (
     user && (
       <div>

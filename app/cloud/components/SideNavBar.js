@@ -1,11 +1,12 @@
 "use client";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import menu from "../data/menu";
 import CreateFolderModal from "./Folder/CreateFolderModal";
 import UploadFileModal from "./File/UploadFileModal";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { verifyUser } from "@/app/middlewares/verifyLoggedInUser";
+import { v4 as uuidv4 } from "uuid";
 
 import Link from "next/link";
 
@@ -13,10 +14,23 @@ function SideNavBar() {
   const [activeIndex, setActiveIndex] = useState(0);
   const router = useRouter();
 
-  const user = verifyUser();
-  if (user === null) {
-    return router.push("/");
+  const params = useSearchParams();
+  let id = params.get("id");
+  if (id == null) {
+    id = 0;
   }
+
+  // Get current user
+  const [user, setUser] = useState("");
+
+  useEffect(() => {
+    let token = localStorage.getItem("token");
+    if (token == "" || token == null) {
+      return router.push("/");
+    }
+    const loggedUser = verifyUser(token);
+    setUser(loggedUser);
+  }, []);
 
   const onMenuClick = (item, index) => {
     setActiveIndex(index);
@@ -81,7 +95,7 @@ function SideNavBar() {
         </button>
 
         <Link
-          href="/cloud/editor"
+          href={`/documents/${uuidv4()}?id=${id}`}
           className="flex gap-2 items-center text-[13px]
         bg-blue-700 w-full p-2 justify-center text-white rounded-md px-3
         hover:scale-105 transition-all mt-1"

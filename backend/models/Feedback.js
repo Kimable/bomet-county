@@ -8,7 +8,7 @@ const feedbackSchema = new mongoose.Schema({
     required: true,
   },
   feedbackText: { type: String, required: true },
-  date: { type: Date, default: Date.now },
+  date: { type: Date, default: Date.now() },
 });
 
 const FeedbackModel =

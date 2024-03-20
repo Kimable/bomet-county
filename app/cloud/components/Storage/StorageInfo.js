@@ -15,11 +15,17 @@ import { useRouter } from "next/navigation";
 function StorageInfo() {
   let router = useRouter();
 
-  const user = verifyUser();
+  // Get current user
+  const [user, setUser] = useState("");
 
-  if (user === null) {
-    return router.push("/");
-  }
+  useEffect(() => {
+    let token = localStorage.getItem("token");
+    if (token == "" || token == null) {
+      return router.push("/");
+    }
+    const loggedUser = verifyUser(token);
+    setUser(loggedUser);
+  }, []);
 
   const db = getFirestore(app);
   const [totalSizeUsed, setTotalSizeUsed] = useState(0);

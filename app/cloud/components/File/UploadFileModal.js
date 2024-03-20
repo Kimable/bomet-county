@@ -1,7 +1,7 @@
 "use client";
 
 import { doc, getFirestore, setDoc } from "firebase/firestore";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { app } from "@/app/Config/FirebaseConfig";
 import { ParentFolderIdContext } from "../../context/ParentFolderIdContext";
 import { ShowToastContext } from "../../context/ShowToastContext";
@@ -10,14 +10,20 @@ import { verifyUser } from "@/app/middlewares/verifyLoggedInUser";
 import { useRouter, useSearchParams } from "next/navigation";
 
 function UploadFileModal({ closeModal }) {
-  let router = useRouter();
-
   const [loading, setLoading] = useState(false);
 
-  const user = verifyUser();
-  if (user === null) {
-    return router.push("/");
-  }
+  // Get current user
+  const [user, setUser] = useState("");
+  const router = useRouter();
+
+  useEffect(() => {
+    let token = localStorage.getItem("token");
+    if (token == "" || token == null) {
+      return router.push("/");
+    }
+    const loggedUser = verifyUser(token);
+    setUser(loggedUser);
+  }, []);
 
   const { parentFolderId, setParentFolderId } = useContext(
     ParentFolderIdContext
