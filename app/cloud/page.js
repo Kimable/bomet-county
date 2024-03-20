@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import styles from "./styles/Home.module.css";
-import { useContext, useEffect, useState } from "react";
+import { Suspense, useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import SearchBar from "./components/SearchBar";
 import FolderList from "./components/Folder/FolderList";
@@ -45,7 +45,7 @@ export default function Home() {
     const q = query(
       collection(db, "Folders"),
       where("parentFolderId", "==", 0),
-      where("createBy", "==", loggedUser?.email)
+      where("createBy", "==", loggedUser?.email || null)
     );
 
     const querySnapshot = onSnapshot(q, (snapshot) => {
@@ -61,7 +61,7 @@ export default function Home() {
     const q = query(
       collection(db, "files"),
       where("parentFolderId", "==", 0),
-      where("createdBy", "==", loggedUser?.email)
+      where("createdBy", "==", loggedUser?.email || null)
     );
 
     const querySnapshot = onSnapshot(q, (snapshot) => {
@@ -71,11 +71,13 @@ export default function Home() {
     });
   };
   return (
-    <div className="p-5">
-      <SearchBar />
-      <FolderList folderList={folderList} />
-      <CreatedFiles />
-      <FileList fileList={fileList} />
-    </div>
+    <Suspense>
+      <div className="p-5">
+        <SearchBar />
+        <FolderList folderList={folderList} />
+        <CreatedFiles />
+        <FileList fileList={fileList} />
+      </div>
+    </Suspense>
   );
 }

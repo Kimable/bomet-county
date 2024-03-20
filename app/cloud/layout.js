@@ -19,20 +19,20 @@ function DocumentsLayout({ children }) {
       value={{ parentFolderId, setParentFolderId }}
     >
       <ShowToastContext.Provider value={{ showToastMsg, setShowToastMsg }}>
-        <Navbar />
-        <div className="flex">
-          <SideNavBar />
-          <Suspense>
+        <Suspense>
+          <Navbar />
+          <div className="flex">
+            <SideNavBar />
+
             <div className="grid grid-cols-1 md:grid-cols-4 w-full">
               <div className="col-span-3">{children}</div>
               <div className="bg-white p-5 order-first md:order-last">
                 <Storage />
               </div>
             </div>
-          </Suspense>
-        </div>
-
-        {showToastMsg ? <Toast msg={showToastMsg} /> : null}
+          </div>
+          {showToastMsg ? <Toast msg={showToastMsg} /> : null}{" "}
+        </Suspense>
       </ShowToastContext.Provider>
     </ParentFolderIdContext.Provider>
   );
