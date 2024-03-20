@@ -21,6 +21,8 @@ const Home = () => {
     }
     const loggedUser = verifyUser(token);
     if (loggedUser === null) {
+      localStorage.setItem("isAdmin", "");
+      localStorage.setItem("teamLead", "");
       localStorage.setItem("token", "");
       return router.push("/");
     }
@@ -38,7 +40,7 @@ const Home = () => {
     if (user !== null) {
       return router.push("/employee/dashboard");
     }
-  }, [user]);
+  }, []);
 
   const onSubmit = async (data) => {
     setLoginStatus(true);

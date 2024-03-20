@@ -32,6 +32,8 @@ const Dashboard = () => {
     const loggedUser = verifyUser(token);
 
     if (loggedUser === null) {
+      localStorage.setItem("isAdmin", "");
+      localStorage.setItem("teamLead", "");
       localStorage.setItem("token", "");
       return router.push("/");
     }
