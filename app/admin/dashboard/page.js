@@ -23,8 +23,6 @@ const Dashboard = () => {
       return router.push("/");
     }
     setUser(loggedUser);
-    getFolderList(loggedUser);
-    getFileList(loggedUser);
   }, []);
 
   return (

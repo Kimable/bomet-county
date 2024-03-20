@@ -47,8 +47,6 @@ const Dashboard = () => {
       return router.push("/");
     }
     setUser(loggedUser);
-    getFolderList(loggedUser);
-    getFileList(loggedUser);
   }, []);
 
   // Function to show attendance status as a toast
