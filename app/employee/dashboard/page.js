@@ -30,14 +30,24 @@ const Dashboard = () => {
   const [onBreak, setOnBreak] = useState(false); // Initialize onBreak as false
   const dispatch = useDispatch();
 
-  let router = useRouter();
-  const user = verifyUser();
+  const [user, setUser] = useState("");
+  const router = useRouter();
 
   useEffect(() => {
-    if (user == null) {
+    let token = localStorage.getItem("token");
+    if (token == "" || token == null) {
       return router.push("/");
     }
-  }, [router]);
+    const loggedUser = verifyUser(token);
+
+    if (loggedUser === null) {
+      localStorage.setItem("token", "");
+      return router.push("/");
+    }
+    setUser(loggedUser);
+    getFolderList(loggedUser);
+    getFileList(loggedUser);
+  }, []);
 
   // Function to show attendance status as a toast
   const showAttendanceStatusToast = (message) => {

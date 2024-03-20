@@ -6,8 +6,8 @@ import { FiUserCheck } from "react-icons/fi";
 import { useRouter } from "next/navigation";
 import { verifyUser } from "@/app/middlewares/verifyLoggedInUser";
 const Dashboard = () => {
-  let [user, setUser] = useState("");
-  let router = useRouter();
+  const [user, setUser] = useState("");
+  const router = useRouter();
 
   useEffect(() => {
     let token = localStorage.getItem("token");
@@ -15,7 +15,14 @@ const Dashboard = () => {
       return router.push("/");
     }
     const loggedUser = verifyUser(token);
+
+    if (loggedUser === null) {
+      localStorage.setItem("token", "");
+      return router.push("/");
+    }
     setUser(loggedUser);
+    getFolderList(loggedUser);
+    getFileList(loggedUser);
   }, []);
 
   return (

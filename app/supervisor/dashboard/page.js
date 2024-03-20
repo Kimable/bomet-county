@@ -21,8 +21,24 @@ import CurrentDate from "@/app/components/common/currentdate/page";
 import { useRouter } from "next/navigation";
 import { verifyUser } from "@/app/middlewares/verifyLoggedInUser";
 const Dashboard = () => {
-  let router = useRouter();
-  const user = verifyUser();
+  const [user, setUser] = useState("");
+  const router = useRouter();
+
+  useEffect(() => {
+    let token = localStorage.getItem("token");
+    if (token == "" || token == null) {
+      return router.push("/");
+    }
+    const loggedUser = verifyUser(token);
+
+    if (loggedUser === null) {
+      localStorage.setItem("token", "");
+      return router.push("/");
+    }
+    setUser(loggedUser);
+    getFolderList(loggedUser);
+    getFileList(loggedUser);
+  }, []);
 
   const [users, setUsers] = useState([]);
   let attendanceDetails = null;
