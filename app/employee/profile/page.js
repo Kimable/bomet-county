@@ -4,10 +4,11 @@ import BreadCrumb from "@/app/components/common/breadcrumbs/page";
 import { FaBars, FaDownload, FaSignInAlt, FaSort } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import EmployeeLayout from "@/app/components/layouts/employeelayout/page";
+import useAuth from "@/app/middlewares/useAuth";
 
 export default function Page() {
-  // Use useSelector to access Redux state
-  const userDetails = useSelector((state) => state.viewUserDetail.userDetails);
+  const user = useAuth();
+  console.log(user);
 
   return (
     <div>
@@ -34,11 +35,7 @@ export default function Page() {
               </div>
               <div className="mx-2">
                 <div className="text-textColor text-xl md:text-2xl mb-2 px-6 py-3">
-                  {userDetails
-                    ? userDetails?.user?.firstName +
-                      " " +
-                      userDetails?.user?.lastName
-                    : "..."}
+                  {user ? user?.firstName + " " + user?.lastName : "..."}
                 </div>
 
                 <div className="relative overflow-x-auto">
@@ -62,7 +59,7 @@ export default function Page() {
                         <th className="px-6 py-4 font-md">(+92) 312 1211232</th>
                         <th className="px-6 py-4 font-md">
                           {" "}
-                          {userDetails ? userDetails?.user?.email : "..."}
+                          {user ? user?.email : "..."}
                         </th>
                       </tr>
                     </tbody>

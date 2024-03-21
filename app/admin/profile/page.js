@@ -2,26 +2,11 @@
 import React, { useEffect, useState } from "react";
 import BreadCrumb from "@/app/components/common/breadcrumbs/page";
 import { FaBars, FaDownload, FaSignInAlt, FaSort } from "react-icons/fa";
-import { verifyUser } from "@/app/middlewares/verifyLoggedInUser";
-import { useRouter } from "next/navigation";
 import SuperuserLayout from "@/app/components/layouts/superuserlayout/page";
+import useAuth from "@/app/middlewares/useAuth";
 
 export default function Page() {
-  let [user, setUser] = useState("");
-  let router = useRouter();
-
-  useEffect(() => {
-    let token = localStorage.getItem("token");
-    if (token == "" || token == null) {
-      return router.push("/");
-    }
-    const loggedUser = verifyUser(token);
-    if (loggedUser === null) {
-      localStorage.setItem("token", "");
-      return router.push("/");
-    }
-    setUser(loggedUser);
-  }, []);
+  const user = useAuth();
 
   return (
     <div>

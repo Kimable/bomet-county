@@ -19,8 +19,8 @@ import BreadCrumb from "@/app/components/common/breadcrumbs/page";
 import { markAttendance } from "@/store/reducer/user/markattendanceReducer";
 import { fetchAttendanceDetail } from "@/store/reducer/user/singleAttendanceDetailReducer";
 import CurrentDate from "@/app/components/common/currentdate/page";
-import { useRouter } from "next/navigation";
-import { verifyUser } from "@/app/middlewares/verifyLoggedInUser";
+
+import useAuth from "@/app/middlewares/useAuth";
 
 const Dashboard = () => {
   let attendanceDetails = null;
@@ -30,24 +30,8 @@ const Dashboard = () => {
   const [onBreak, setOnBreak] = useState(false); // Initialize onBreak as false
   const dispatch = useDispatch();
 
-  const [user, setUser] = useState("");
-  const router = useRouter();
-
-  useEffect(() => {
-    let token = localStorage.getItem("token");
-    if (token == "" || token == null) {
-      return router.push("/");
-    }
-    const loggedUser = verifyUser(token);
-
-    if (loggedUser === null) {
-      localStorage.setItem("isAdmin", "");
-      localStorage.setItem("teamLead", "");
-      localStorage.setItem("token", "");
-      return router.push("/");
-    }
-    setUser(loggedUser);
-  }, []);
+  //  Get user
+  const user = useAuth();
 
   // Function to show attendance status as a toast
   const showAttendanceStatusToast = (message) => {
@@ -209,7 +193,7 @@ const Dashboard = () => {
       <EmployeeLayout>
         <div className="bg-card p-2 m-2 rounded-lg mb-5">
           <div className="flex justify-between items-center my-2">
-            <BreadCrumb text="Good Day , Kashif" />
+            <BreadCrumb text={`Hello, ${user?.firstName} ${user?.lastName}`} />
             <button className="flex items-center text-white text-sm text-center bg-themeColor p-2 rounded-lg">
               <FiCalendar className="text-white mx-2" /> <CurrentDate />
             </button>

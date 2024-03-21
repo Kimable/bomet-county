@@ -9,7 +9,7 @@ import { verifyUser } from "@/app/middlewares/verifyLoggedInUser";
 
 const Navbar = ({ handleToggle, toggleDrawer }) => {
   const router = useRouter();
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(true);
 
   useEffect(() => {
     setIsAdmin(localStorage.getItem("isAdmin"));
@@ -106,7 +106,9 @@ const Navbar = ({ handleToggle, toggleDrawer }) => {
                 >
                   <li>
                     <a
-                      href={isAdmin ? "/admin/profile" : "/employee/profile"}
+                      href={
+                        isAdmin == true ? "/admin/profile" : "/employee/profile"
+                      }
                       className="block py-2 px-4 text-sm hover:bg-gray-100 "
                     >
                       Profile

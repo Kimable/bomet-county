@@ -43,20 +43,7 @@ export const options = {
 };
 
 const generateChartData = (color, shadowColor) => {
-  const labels = [
-    "Jan",
-    "Feb",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec",
-  ];
+  const labels = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
   const gradient = (ctx) => {
     const chart = ctx.chart;

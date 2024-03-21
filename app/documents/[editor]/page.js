@@ -5,8 +5,8 @@ import "quill/dist/quill.snow.css";
 import "./styles.css";
 import { io } from "socket.io-client";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
-import { verifyUser } from "@/app/middlewares/verifyLoggedInUser";
 import { useForm } from "react-hook-form";
+import useAuth from "@/app/middlewares/useAuth";
 
 const SAVE_INTERVAL_MS = 2000;
 const TOOLBAR_OPTIONS = [
@@ -27,18 +27,10 @@ export default function TextEditor() {
   const [quill, setQuill] = useState();
   const { register, handleSubmit } = useForm();
 
-  // Get current user
-  const [user, setUser] = useState("");
-  const router = useRouter();
+  const [fileName, setFileName] = useState("");
 
-  useEffect(() => {
-    let token = localStorage.getItem("token");
-    if (token == "" || token == null) {
-      return router.push("/");
-    }
-    const loggedUser = verifyUser(token);
-    setUser(loggedUser);
-  }, []);
+  // Get current user
+  const user = useAuth();
 
   // Get Current Folder Path
   const params = useSearchParams();
@@ -60,7 +52,8 @@ export default function TextEditor() {
     if (socket == null || quill == null) return;
 
     socket.once("load-document", (document) => {
-      quill.setContents(document);
+      setFileName(document.fileName);
+      quill.setContents(document.data);
       quill.enable();
     });
 
@@ -136,23 +129,29 @@ export default function TextEditor() {
   };
   return (
     <>
-      <form className="flex flex-row my-5" onSubmit={handleSubmit(onSubmit)}>
-        <div className="w-96">
-          <input
-            type="text"
-            id="fileName"
-            {...register("fileName")}
-            className="bg-card border-none text-textColor text-sm focus:outline-none block w-full p-2.5 "
-            placeholder="File Name..."
-          />
-        </div>
+      <form className="my-5" onSubmit={handleSubmit(onSubmit)}>
+        <p className="text-textColor text-sm pt-2.5 font-bold">File Name: </p>
+        <div className="flex flex-row">
+          <div className="w-96">
+            <input
+              type="text"
+              id="fileName"
+              {...register("fileName")}
+              className="bg-card border-none text-textColor text-sm focus:outline-none block w-full p-2.5 "
+              value={fileName}
+              onChange={(event) => {
+                setFileName(event.target.value);
+              }}
+            />
+          </div>
 
-        <button
-          type="submit"
-          className="text-white bg-themeColor focus:outline-none font-medium text-sm px-5 py-2.5 text-center"
-        >
-          Change File Name
-        </button>
+          <button
+            type="submit"
+            className="text-white bg-themeColor focus:outline-none font-medium text-sm px-5 py-2.5 text-center"
+          >
+            Change File Name
+          </button>
+        </div>
       </form>
       <div className="container" ref={wrapperRef}></div>
     </>
