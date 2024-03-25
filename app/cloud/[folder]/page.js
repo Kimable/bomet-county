@@ -124,8 +124,8 @@ function FolderDetails() {
             No Folder Found
           </h2>
         )}
-
-        <CreatedFiles />
+        <h2 className="text-[18px] font-bold">Created Files</h2>
+        <CreatedFiles title="Created Files" />
         <FileList fileList={fileList} />
       </div>
     </Suspense>

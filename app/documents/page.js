@@ -1,9 +1,9 @@
 "use client";
-import { v4 as uuidv4 } from "uuid";
 import { useSearchParams } from "next/navigation";
 import "./styles.css";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import CreatedFiles from "../cloud/components/createdFiles/CreatedFiles";
 
 function Documents() {
   const params = useSearchParams();
@@ -15,14 +15,37 @@ function Documents() {
   const [uuid, setUuid] = useState(null);
 
   useEffect(() => {
-    setUuid(uuidv4());
+    function generateUniqueCode(length) {
+      // Define characters allowed in the code
+      const chars =
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+      let code = "";
+      for (let i = 0; i < length; i++) {
+        // Generate random index and pick character from chars
+        code += chars[Math.floor(Math.random() * chars.length)];
+      }
+
+      // For better uniqueness, consider adding a timestamp:
+      const timestamp = Date.now().toString(36).toUpperCase();
+      code = timestamp + code.slice(0, length - timestamp.length);
+
+      return code.toLowerCase();
+    }
+
+    // Example usage:
+    const uniqueCode = generateUniqueCode(20);
+    console.log(uniqueCode); // Output: Example: 1A2B3C4D5E67
+    setUuid(uniqueCode);
   }, []);
 
   {
     return uuid != null ? (
       <>
-        <div className="my-8 w-72">
-          <h1 className="font-bold text-xl pb-4">Create A New Document</h1>
+        <div className="container my-8 w-auto">
+          <h1 className="font-bold text-left text-2xl pb-4">
+            Create A New Document
+          </h1>
           <Link href={`/documents/${uuid}?id=${id}`}>
             <div className="w-64 h-80 bg-slate-200 flex justify-center items-center border-spacing-1">
               <h2 className="text-8xl text-blue-400">+</h2>
@@ -30,7 +53,7 @@ function Documents() {
           </Link>
         </div>
         <div className="container my-10 bg-gray-100 p-5">
-          <h2 className="font-bold text-2xl pb-4">Templates</h2>
+          <h2 className="font-bold text-2xl pb-4 text-left">Templates</h2>
           {/* Templates */}
           <div className="templates flex flex-row items-center justify-around">
             <div className="template">
@@ -58,7 +81,10 @@ function Documents() {
               </h2>
             </div>
           </div>
-        </div>{" "}
+        </div>
+        <div className="container my-8 text-left">
+          <CreatedFiles title="Recent Files" />
+        </div>
       </>
     ) : (
       <p className="my-10 font-bold text-lg">Loading...</p>

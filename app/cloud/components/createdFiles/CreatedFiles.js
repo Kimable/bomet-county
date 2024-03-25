@@ -4,7 +4,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 
-function CreatedFiles() {
+function CreatedFiles({ title }) {
   const [files, setFiles] = useState([]);
   const params = useSearchParams();
   const router = useRouter();
@@ -53,7 +53,7 @@ function CreatedFiles() {
 
   return (
     <div className="bg-white mt-5 p-5 rounded-lg">
-      <h2 className="text-[18px] font-bold">Created Files</h2>
+      <h2 className="text-[18px] font-bold">{title}</h2>
 
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 mt-3 gap-4">
         {files.length !== 0 ? (

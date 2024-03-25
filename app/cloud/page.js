@@ -78,7 +78,7 @@ export default function Home() {
       <div className="p-5">
         <SearchBar />
         <FolderList folderList={folderList} />
-        <CreatedFiles />
+        <CreatedFiles title="Created Files" />
         <FileList fileList={fileList} />
       </div>
     </Suspense>

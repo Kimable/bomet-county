@@ -104,7 +104,7 @@ function SideNavBar() {
         bg-blue-700 w-full p-2 justify-center text-white rounded-md px-3
         hover:scale-105 transition-all mt-1"
         >
-          Create a File
+          Create Document
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
