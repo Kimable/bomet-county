@@ -1,16 +1,22 @@
 "use client";
 import { v4 as uuidv4 } from "uuid";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import "./styles.css";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 function Documents() {
-  const router = useRouter();
   const params = useSearchParams();
-  let id = params.get("id");
-  if (id == null) {
-    id = 0;
-  }
+  const [id, setId] = useState(0);
+
+  useEffect(() => {
+    let id = params.get("id");
+    if (id == null) {
+      setId(0);
+    } else {
+      setId(id);
+    }
+  }, []);
 
   return (
     <>
