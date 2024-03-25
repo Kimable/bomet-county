@@ -1,4 +1,5 @@
 "use client";
+import { v4 as uuidv4 } from "uuid";
 import { useSearchParams } from "next/navigation";
 import "./styles.css";
 import Link from "next/link";
@@ -6,37 +7,18 @@ import { useEffect, useState } from "react";
 import CreatedFiles from "../cloud/components/createdFiles/CreatedFiles";
 
 function Documents() {
-  const params = useSearchParams();
-  let id = params.get("id");
-  if (id == null) {
-    id = 0;
-  }
-
+  let [id, setId] = useState(0);
   const [uuid, setUuid] = useState(null);
+  const params = useSearchParams();
 
   useEffect(() => {
-    function generateUniqueCode(length) {
-      // Define characters allowed in the code
-      const chars =
-        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-
-      let code = "";
-      for (let i = 0; i < length; i++) {
-        // Generate random index and pick character from chars
-        code += chars[Math.floor(Math.random() * chars.length)];
-      }
-
-      // For better uniqueness, consider adding a timestamp:
-      const timestamp = Date.now().toString(36).toUpperCase();
-      code = timestamp + code.slice(0, length - timestamp.length);
-
-      return code.toLowerCase();
+    const fId = params.get("id");
+    if (fId == null) {
+      setId(0);
+    } else {
+      setId(fId);
     }
-
-    // Example usage:
-    const uniqueCode = generateUniqueCode(20);
-    console.log(uniqueCode); // Output: Example: 1A2B3C4D5E67
-    setUuid(uniqueCode);
+    setUuid(uuidv4());
   }, []);
 
   {
