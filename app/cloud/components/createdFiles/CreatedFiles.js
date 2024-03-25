@@ -45,8 +45,6 @@ function CreatedFiles({ title }) {
     setFiles(response.getDocuments);
   }
 
-  console.log(files);
-
   const onFileClick = (index, item) => {
     router.push("/documents/" + item._id);
   };
