@@ -7,6 +7,7 @@ import { io } from "socket.io-client";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import useAuth from "@/app/middlewares/useAuth";
+import { cv, letter, minutes } from "../templates/templates";
 
 const SAVE_INTERVAL_MS = 2000;
 const TOOLBAR_OPTIONS = [
@@ -35,6 +36,7 @@ export default function TextEditor() {
   // Get Current Folder Path
   const params = useSearchParams();
   let folderId = params.get("id");
+  let template = params.get("template");
   if (folderId == null) {
     folderId = 0;
   }
@@ -51,11 +53,31 @@ export default function TextEditor() {
   useEffect(() => {
     if (socket == null || quill == null) return;
 
-    socket.once("load-document", (document) => {
-      setFileName(document.fileName);
-      quill.setContents(document.data);
-      quill.enable();
-    });
+    if (template == "letter") {
+      socket.once("load-document", (document) => {
+        setFileName(document.fileName);
+        quill.setContents(letter);
+        quill.enable();
+      });
+    } else if (template === "cv") {
+      socket.once("load-document", (document) => {
+        setFileName(document.fileName);
+        quill.setContents(cv);
+        quill.enable();
+      });
+    } else if (template === "minutes") {
+      socket.once("load-document", (document) => {
+        setFileName(document.fileName);
+        quill.setContents(minutes);
+        quill.enable();
+      });
+    } else {
+      socket.once("load-document", (document) => {
+        setFileName(document.fileName);
+        quill.setContents(document.data);
+        quill.enable();
+      });
+    }
 
     socket.emit("get-document", {
       documentId,

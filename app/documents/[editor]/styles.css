@@ -7,6 +7,16 @@
   font-weight: 500;
 }
 
+.ql-snow .ql-editor img {
+  width: 300px;
+  height: auto;
+  object-fit: cover;
+  resize: both;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
 .ql-container.ql-snow {
   border: none;
 }
@@ -16,6 +26,37 @@
   top: 0;
   z-index: 1;
   background-color: aliceblue;
+}
+
+/* Image resize */
+.container {
+  text-align: center;
+}
+
+.resizable {
+  max-width: 100%;
+  max-height: 100%;
+  cursor: nwse-resize; /* Cursor style for resizing */
+  position: relative;
+}
+
+.resize-handle {
+  width: 10px;
+  height: 10px;
+  background-color: #000;
+  position: absolute;
+}
+
+.resize-handle.top-left {
+  top: -5px;
+  left: -5px;
+  cursor: nwse-resize;
+}
+
+.resize-handle.bottom-right {
+  bottom: -5px;
+  right: -5px;
+  cursor: nwse-resize;
 }
 
 @page {

@@ -1,0 +1,105 @@
+{
+  "fileName": "Letter Template 1",
+  "data": {
+    "ops": [
+      {
+        "attributes": { "color": "#008a00", "bold": true },
+        "insert": "___________________________________________"
+      },
+      { "attributes": { "header": { "$numberInt": "1" } }, "insert": "\n" },
+      { "insert": "\n\n" },
+      {
+        "attributes": {
+          "background": "transparent",
+          "color": "#353744",
+          "bold": true
+        },
+        "insert": "Your Name"
+      },
+      { "insert": "\n" },
+      {
+        "attributes": { "background": "transparent", "color": "#666666" },
+        "insert": "123 Your Street"
+      },
+      { "insert": "\n" },
+      {
+        "attributes": { "background": "transparent", "color": "#666666" },
+        "insert": "Your City, ST 12345"
+      },
+      { "insert": "\n" },
+      {
+        "attributes": { "background": "transparent", "color": "#666666" },
+        "insert": "(123) 456-7890"
+      },
+      { "insert": "\n" },
+      {
+        "attributes": { "background": "transparent", "color": "#666666" },
+        "insert": "no_reply@example.com"
+      },
+      { "insert": "\n\n" },
+      {
+        "attributes": { "background": "transparent", "color": "#353744" },
+        "insert": "4th September 20XX"
+      },
+      { "insert": "\n" },
+      {
+        "attributes": {
+          "background": "transparent",
+          "color": "#353744",
+          "bold": true
+        },
+        "insert": "Ronny Reader"
+      },
+      { "insert": "\n" },
+      {
+        "attributes": { "background": "transparent", "color": "#353744" },
+        "insert": "CEO, Company Name"
+      },
+      { "insert": "\n" },
+      {
+        "attributes": { "background": "transparent", "color": "#353744" },
+        "insert": "123 Address St "
+      },
+      { "insert": "\n" },
+      {
+        "attributes": { "background": "transparent", "color": "#353744" },
+        "insert": "Anytown, ST 12345"
+      },
+      { "insert": "\n\n" },
+      {
+        "attributes": { "background": "transparent", "color": "#353744" },
+        "insert": "Dear Ms. Reader,"
+      },
+      { "insert": "\n" },
+      {
+        "attributes": { "background": "transparent", "color": "#353744" },
+        "insert": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat."
+      },
+      { "insert": "\n\n" },
+      {
+        "attributes": { "background": "transparent", "color": "#353744" },
+        "insert": "Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan."
+      },
+      { "insert": "\n\n" },
+      {
+        "attributes": { "background": "transparent", "color": "#353744" },
+        "insert": "Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum. Typi non habent claritatem insitam; est usus legentis in iis qui facit eorum claritatem. Investigationes demonstraverunt lectores legere me lius quod ii legunt saepius."
+      },
+      { "insert": "\n\n\n" },
+      {
+        "attributes": { "background": "transparent", "color": "#353744" },
+        "insert": "Sincerely,"
+      },
+      { "insert": "\n\n" },
+      {
+        "attributes": {
+          "background": "transparent",
+          "color": "#008a00",
+          "bold": true
+        },
+        "insert": "Your Name"
+      },
+      { "insert": "\n" }
+    ]
+  }
+}
