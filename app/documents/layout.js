@@ -16,12 +16,14 @@ function EditorLayout({ children }) {
       value={{ parentFolderId, setParentFolderId }}
     >
       <ShowToastContext.Provider value={{ showToastMsg, setShowToastMsg }}>
-        <Navbar />
-        <div className="flex justify-center">
-          <div className="">{children}</div>
-        </div>
+        <Suspense>
+          <Navbar />
+          <div className="flex justify-center">
+            <div className="">{children}</div>
+          </div>
 
-        {showToastMsg ? <Toast msg={showToastMsg} /> : null}
+          {showToastMsg ? <Toast msg={showToastMsg} /> : null}
+        </Suspense>
       </ShowToastContext.Provider>
     </ParentFolderIdContext.Provider>
   );
