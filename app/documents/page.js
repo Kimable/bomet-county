@@ -1,8 +1,8 @@
 "use client";
 import { v4 as uuidv4 } from "uuid";
 import { useSearchParams } from "next/navigation";
-import "./styles.css";
-import { useEffect, useState } from "react";
+import "./styles/styles.css";
+import { useEffect, useState, Suspense } from "react";
 import CreatedFiles from "../cloud/components/createdFiles/CreatedFiles";
 
 function Documents() {
@@ -13,14 +13,13 @@ function Documents() {
   }
 
   const [uuid, setUuid] = useState(null);
-
   useEffect(() => {
     setUuid(uuidv4());
   }, []);
 
   {
     return uuid != null ? (
-      <>
+      <Suspense>
         <div className="container my-8 w-auto">
           <h1 className="font-bold text-left text-2xl pb-4">
             Create A New Document
@@ -64,7 +63,7 @@ function Documents() {
         <div className="container my-8 text-left">
           <CreatedFiles title="Recent Files" />
         </div>
-      </>
+      </Suspense>
     ) : (
       <p className="my-10 font-bold text-lg">Loading...</p>
     );
