@@ -1,11 +1,11 @@
 "use client";
+import React, { useEffect, useState } from "react";
+import CreatedFiles from "../cloud/components/createdFiles/CreatedFiles";
+import "./styles/styles.css";
 import { v4 as uuidv4 } from "uuid";
 import { useSearchParams } from "next/navigation";
-import "./styles/styles.css";
-import { useEffect, useState, Suspense } from "react";
-import CreatedFiles from "../cloud/components/createdFiles/CreatedFiles";
 
-function Documents() {
+const Documents = () => {
   const params = useSearchParams();
   let id = params.get("id");
   if (id == null) {
@@ -19,7 +19,7 @@ function Documents() {
 
   {
     return uuid != null ? (
-      <Suspense>
+      <div>
         <div className="container my-8 w-auto">
           <h1 className="font-bold text-left text-2xl pb-4">
             Create A New Document
@@ -32,7 +32,7 @@ function Documents() {
         </div>
         <div className="container my-10 bg-gray-100 p-5">
           <h2 className="font-bold text-2xl pb-4 text-left">Templates</h2>
-          {/* Templates */}
+
           <div className="templates flex flex-row items-center justify-around">
             <div className="template">
               <a href={`/documents/${uuid}?id=${id}&template=letter`}>
@@ -63,11 +63,11 @@ function Documents() {
         <div className="container my-8 text-left">
           <CreatedFiles title="Recent Files" />
         </div>
-      </Suspense>
+      </div>
     ) : (
       <p className="my-10 font-bold text-lg">Loading...</p>
     );
   }
-}
+};
 
 export default Documents;
