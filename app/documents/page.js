@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 import { useSearchParams } from "next/navigation";
 import "./styles/styles.css";
 import CreatedFiles from "../cloud/components/createdFiles/CreatedFiles";
+import Link from "next/link";
 
 function Documents() {
   const params = useSearchParams();
