@@ -68,8 +68,8 @@ const generateChartData = (color, shadowColor) => {
     labels,
     datasets: [
       {
-        label: "Report",
-        data: labels.map(() => Math.floor(Math.random() * 2000 - 1000)),
+        label: "Average Report Hours",
+        data: [8, 6, 8, 7, 8, 4, 0],
         borderWidth: 3,
         borderColor: color,
         fill: "start", // Enable fill for the area under the line

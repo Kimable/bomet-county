@@ -9,6 +9,10 @@ import { useForm } from "react-hook-form";
 import useAuth from "@/app/middlewares/useAuth";
 import { cv, letter, minutes } from "../templates/templates";
 
+import ImageEdit from "quill-image-edit-module";
+
+Quill.register("modules/imageEdit", ImageEdit);
+
 const SAVE_INTERVAL_MS = 2000;
 const TOOLBAR_OPTIONS = [
   [{ header: [1, 2, 3, 4, 5, 6, false] }],
@@ -133,7 +137,12 @@ export default function TextEditor() {
     wrapper.append(editor);
     const q = new Quill(editor, {
       theme: "snow",
-      modules: { toolbar: TOOLBAR_OPTIONS },
+      modules: {
+        toolbar: TOOLBAR_OPTIONS,
+        imageEdit: {
+          modules: ["Resize", "DisplaySize", "Toolbar", "Delete"],
+        },
+      },
     });
     q.disable();
     q.setText("Loading...");

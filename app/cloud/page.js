@@ -41,8 +41,6 @@ export default function Home() {
     getFileList(loggedUser);
   }, []);
 
-  useEffect(() => {}, []);
-
   const getFolderList = async (loggedUser) => {
     setFolderList([]);
     const q = query(

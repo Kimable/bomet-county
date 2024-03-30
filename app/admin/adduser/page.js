@@ -20,14 +20,21 @@ const AddUser = () => {
   const [departments, setDepartments] = useState([]);
   const [shiftList, setshiftList] = useState([]);
 
-  const user = verifyUser();
   const router = useRouter();
 
   useEffect(() => {
-    if (user == null) {
+    let token = localStorage.getItem("token");
+    if (token == "" || token == null) {
       return router.push("/");
     }
-    if (user.isAdmin !== true) {
+    const loggedUser = verifyUser(token);
+
+    if (loggedUser === null) {
+      localStorage.setItem("token", "");
+      return router.push("/");
+    }
+
+    if (loggedUser.isAdmin !== true) {
       return router.push("/unauthorized");
     }
   }, []);

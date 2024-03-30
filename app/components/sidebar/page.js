@@ -119,9 +119,9 @@ const CustomSidebar = ({ userRole, toggle, pathname }) => {
             <SubMenu icon={<FiBook />} label="Department Management">
               <MenuItem
                 icon={<FiLayout />}
-                active={activeItem === "/common/departments"}
-                onClick={() => handleMenuItemClick("/common/departments")}
-                component={<Link href="/common/departments" />}
+                active={activeItem === "/admin/departments"}
+                onClick={() => handleMenuItemClick("/admin/departments")}
+                component={<Link href="/admin/departments" />}
               >
                 {" "}
                 Departments{" "}
