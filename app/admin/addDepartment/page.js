@@ -6,6 +6,8 @@ import { useForm } from "react-hook-form";
 import BreadCrumb from "@/app/components/common/breadcrumbs/page";
 import { useDispatch } from "react-redux";
 import CurrentDate from "@/app/components/common/currentdate/page";
+import { showToast } from "@/app/components/toast";
+import { ToastContainer } from "react-toastify";
 
 const AddDepartment = () => {
   const { register, handleSubmit, setValue } = useForm();
@@ -18,6 +20,7 @@ const AddDepartment = () => {
       body: JSON.stringify(data),
     });
 
+    showToast("Department Added Successfully");
     const responseData = await response.json();
     console.log(responseData);
     setLoading(false);
@@ -65,6 +68,7 @@ const AddDepartment = () => {
             </button>
           </form>
         )}
+        <ToastContainer />
       </div>
     </SuperuserLayout>
   );

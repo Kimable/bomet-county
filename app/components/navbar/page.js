@@ -9,11 +9,6 @@ import { verifyUser } from "@/app/middlewares/verifyLoggedInUser";
 
 const Navbar = ({ handleToggle, toggleDrawer }) => {
   const router = useRouter();
-  const [isAdmin, setIsAdmin] = useState(true);
-
-  useEffect(() => {
-    setIsAdmin(localStorage.getItem("isAdmin"));
-  }, []);
 
   const handleLogout = async () => {
     localStorage.setItem("token", "");
@@ -105,14 +100,16 @@ const Navbar = ({ handleToggle, toggleDrawer }) => {
                   aria-labelledby="dropdown"
                 >
                   <li>
-                    <a
+                    <Link
                       href={
-                        isAdmin == true ? "/admin/profile" : "/employee/profile"
+                        user?.isAdmin == true
+                          ? "/admin/profile"
+                          : "/employee/profile"
                       }
                       className="block py-2 px-4 text-sm hover:bg-gray-100 "
                     >
                       Profile
-                    </a>
+                    </Link>
                   </li>
                   <li>
                     <a

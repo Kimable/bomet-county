@@ -12,6 +12,8 @@ import { fetchShifts } from "@/store/reducer/admin/fetchShiftsReducer";
 import { verifyUser } from "@/app/middlewares/verifyLoggedInUser";
 import { useRouter } from "next/navigation";
 import { setDoc } from "firebase/firestore";
+import { showToast } from "@/app/components/toast";
+import { ToastContainer } from "react-toastify";
 
 const AddUser = () => {
   const [userType, setUserType] = useState("");
@@ -74,14 +76,8 @@ const AddUser = () => {
     });
     let res = await addUser.json();
 
-    //  let userFolder = await setDoc(doc(db, "Folders", docId), {
-    //     name: folderName,
-    //     id: docId,
-    //     createBy: user.email,
-    //     parentFolderId: id,
-    //   });
-
-    console.log(res.data);
+    showToast("Successfully Added employee");
+    console.log(res);
   };
 
   // to fetch team leads
@@ -134,6 +130,8 @@ const AddUser = () => {
             <FiCalendar className="text-white mx-2" /> <CurrentDate />
           </button>
         </div>
+
+        <ToastContainer />
 
         <form className="" onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-6">
