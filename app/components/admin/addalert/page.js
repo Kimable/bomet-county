@@ -79,7 +79,7 @@ const AddAlert = () => {
           />
         </div>
 
-        <div className="lg:absolute lg:bottom-2 lg:right-2 flex justify-end">
+        <div className="flex justify-end">
           <button className="mx-1 text-white text-sm text-center bg-textColor p-2 rounded-lg">
             Cancel
           </button>
@@ -87,7 +87,7 @@ const AddAlert = () => {
             className="mx-1  text-white text-sm text-center bg-themeColor p-2 rounded-lg"
             type="submit"
           >
-            Request Now
+            Add Alert
           </button>
         </div>
       </form>

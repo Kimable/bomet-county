@@ -29,7 +29,6 @@ function page() {
             <FiCalendar className="text-white mx-2" /> <CurrentDate />
           </button>
         </div>
-
         {departments.length == 0 ? (
           <p className="font-bold text-center my-8">Loading Departments...</p>
         ) : (
@@ -43,14 +42,14 @@ function page() {
                 </div>
               </div>
             ))}
-            <Link
-              href="/admin/addDepartment"
-              className="flex items-center btn btn-secondary text-white text-sm text-center p-2 rounded-lg my-7"
-            >
-              Add Department <FiPlus className="text-white mx-2" />
-            </Link>
           </div>
         )}
+        <Link
+          href="/admin/addDepartment"
+          className="btn btn-secondary text-white text-sm text-center p-2 rounded-lg my-7"
+        >
+          Add Department <FiPlus className="text-white mx-2" />
+        </Link>
       </div>
     </SuperuserLayout>
   );

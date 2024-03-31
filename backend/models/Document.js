@@ -9,6 +9,7 @@ const documentSchema = new Schema(
     fileName: { type: String, default: `Document-${Date.now()}` },
     parentFolderId: String,
     data: Object,
+    sharedWith: [String],
   },
   { timestamps: true }
 );

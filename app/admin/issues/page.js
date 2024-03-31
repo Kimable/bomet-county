@@ -69,7 +69,7 @@ const ReportProblem = () => {
   // update alert status
   const updateAlertStatus = async (id, newStatus) => {
     try {
-      await axios.post(`${getHostUrl()}/api/admin/updateproblem`, {
+      await axios.post(`/api/admin/updateproblem`, {
         id,
         newStatus,
       });

@@ -35,7 +35,7 @@ const Alerts = () => {
         onClick={closeModalAlert}
         style={{ background: "none", border: "none", cursor: "pointer" }}
       >
-        x
+        &times;
       </button>
     </div>
   );
@@ -53,7 +53,6 @@ const Alerts = () => {
         console.error("Error fetching alerts:", error);
       });
   }, [dispatch]);
-
 
   return (
     <SuperuserLayout>

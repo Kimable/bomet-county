@@ -10,6 +10,9 @@ import useAuth from "@/app/middlewares/useAuth";
 import { cv, letter, minutes } from "../templates/templates";
 
 import ImageEdit from "quill-image-edit-module";
+import { FiShare } from "react-icons/fi";
+import { showToast } from "@/app/components/toast";
+import { ToastContainer } from "react-toastify";
 
 Quill.register("modules/imageEdit", ImageEdit);
 
@@ -33,6 +36,7 @@ export default function TextEditor() {
   const { register, handleSubmit } = useForm();
 
   const [fileName, setFileName] = useState("");
+  const [email, setEmail] = useState("");
 
   // Get current user
   const user = useAuth();
@@ -158,32 +162,75 @@ export default function TextEditor() {
     let updatedFileName = await response.json();
     console.log(updatedFileName);
   };
+
+  // Sharing Document
+  const shareDocument = async (data) => {
+    let response = await fetch(`/api/user/sharedocument`, {
+      method: "POST",
+      body: JSON.stringify({ docId: documentId, email: data.email }),
+    });
+    let updatedFileName = await response.json();
+    showToast("Document Shared successfully");
+    console.log(updatedFileName);
+  };
+
   return (
     <>
-      <form className="my-5" onSubmit={handleSubmit(onSubmit)}>
-        <p className="text-textColor text-sm pt-2.5 font-bold">File Name: </p>
-        <div className="flex flex-row">
-          <div className="w-96">
-            <input
-              type="text"
-              id="fileName"
-              {...register("fileName")}
-              className="bg-card border-none text-textColor text-sm focus:outline-none block w-full p-2.5 "
-              value={fileName}
-              onChange={(event) => {
-                setFileName(event.target.value);
-              }}
-            />
-          </div>
+      <div className="flex flex-row">
+        {/* Update file name */}
+        <form className="my-5 w-96 mr-3" onSubmit={handleSubmit(onSubmit)}>
+          <p className="text-textColor text-sm pt-2.5 font-bold">File Name: </p>
+          <div className="flex flex-row">
+            <div className="w-96">
+              <input
+                type="text"
+                id="fileName"
+                {...register("fileName")}
+                className="bg-card border-none text-textColor text-sm focus:outline-none block w-full p-2.5 "
+                value={fileName}
+                onChange={(event) => {
+                  setFileName(event.target.value);
+                }}
+              />
+            </div>
 
-          <button
-            type="submit"
-            className="text-white bg-themeColor focus:outline-none font-medium text-sm px-5 py-2.5 text-center"
-          >
-            Change File Name
-          </button>
-        </div>
-      </form>
+            <button
+              type="submit"
+              className="text-white bg-themeColor focus:outline-none font-medium text-sm px-5 py-2.5 text-center"
+            >
+              Change
+            </button>
+          </div>
+        </form>
+
+        {/* Share doument*/}
+        <form className="my-5 w-96" onSubmit={handleSubmit(shareDocument)}>
+          <p className="text-textColor text-sm pt-2.5 font-bold">Share With:</p>
+          <div className="flex flex-row">
+            <div className="w-96">
+              <input
+                type="email"
+                id="email"
+                {...register("email")}
+                className="bg-card border-none text-textColor text-sm focus:outline-none block w-full p-2.5 "
+                value={email}
+                placeholder="Enter email to share document"
+                onChange={(event) => {
+                  setEmail(event.target.value);
+                }}
+              />
+            </div>
+
+            <button
+              type="submit"
+              className="text-white bg-themeColor focus:outline-none font-medium text-sm px-5 py-2.5 text-center inline"
+            >
+              Share
+            </button>
+          </div>
+        </form>
+        <ToastContainer />
+      </div>
       <div className="container" ref={wrapperRef}></div>
     </>
   );
