@@ -8,7 +8,7 @@ const documentHandler = async (request) => {
     const data = await request.json();
     const updateDoc = await DocumentModel.findByIdAndUpdate(
       data.docId,
-      { $push: { sharedWith: { $each: data.email } } },
+      { $push: { sharedWith: { $each: [data.email] } } },
       { new: true }
     );
 
@@ -26,6 +26,7 @@ const documentHandler = async (request) => {
     return NextResponse.json(
       {
         message: "Failed to update the document",
+        error,
       },
       {
         status: 500,
