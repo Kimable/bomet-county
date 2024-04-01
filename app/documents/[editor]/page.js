@@ -12,10 +12,10 @@ import { cv, letter, minutes } from "../templates/templates";
 import ImageEdit from "quill-image-edit-module";
 import { showToast } from "@/app/components/toast";
 import { ToastContainer } from "react-toastify";
-import BreadCrumb from "@/app/components/common/breadcrumbs/page";
-import { FaDownload } from "react-icons/fa";
 import { saveAs } from "file-saver";
 import { pdfExporter } from "quill-to-pdf";
+import * as quillToWord from "quill-to-word";
+import FileNav from "../components/FileNav";
 
 Quill.register("modules/imageEdit", ImageEdit);
 
@@ -183,76 +183,30 @@ export default function TextEditor() {
     const delta = quill.getContents(); // gets the Quill delta
     const pdfAsBlob = await pdfExporter.generatePdf(delta); // converts to PDF
     saveAs(pdfAsBlob, `${fileName}.pdf`); // downloads from the browser
+    showToast("File downloaded successfully");
+  }
+
+  // Download Word
+  async function downloadWord() {
+    const quillToWordConfig = {
+      exportAs: "blob",
+    };
+    const delta = quill.getContents();
+    const docAsBlob = await quillToWord.generateWord(delta, quillToWordConfig);
+    saveAs(docAsBlob, `${fileName}.docx`);
   }
 
   return (
     <>
-      <div className="card rounded-lg shadow bg-card p-2 my-2">
-        {/* card header start */}
-        <div className="flex justify-between items-center my-2">
-          <BreadCrumb text="Document" />
-          <button
-            onClick={downloadPdf}
-            className="flex items-center text-white text-sm text-center bg-themeColor p-2 rounded-lg"
-          >
-            <FaDownload className="text-white mx-2" /> Download File
-          </button>
-        </div>
-      </div>
-      <div className="flex flex-row">
-        {/* Update file name */}
-        <form className="my-5 w-96 mr-3" onSubmit={handleSubmit(onSubmit)}>
-          <p className="text-textColor text-sm pt-2.5 font-bold">File Name: </p>
-          <div className="flex flex-row">
-            <div className="w-96">
-              <input
-                type="text"
-                id="fileName"
-                {...register("fileName")}
-                className="bg-card border-none text-textColor text-sm focus:outline-none block w-full p-2.5 "
-                value={fileName}
-                onChange={(event) => {
-                  setFileName(event.target.value);
-                }}
-              />
-            </div>
+      <FileNav
+        fileName={fileName}
+        setFileName={setFileName}
+        downloadPdf={downloadPdf}
+        shareDocument={shareDocument}
+        editFileName={onSubmit}
+        downloadWord={downloadWord}
+      />
 
-            <button
-              type="submit"
-              className="text-white bg-themeColor focus:outline-none font-medium text-sm px-5 py-2.5 text-center"
-            >
-              Change
-            </button>
-          </div>
-        </form>
-
-        {/* Share doument*/}
-        <form className="my-5 w-96" onSubmit={handleSubmit(shareDocument)}>
-          <p className="text-textColor text-sm pt-2.5 font-bold">Share With:</p>
-          <div className="flex flex-row">
-            <div className="w-96">
-              <input
-                type="email"
-                id="email"
-                {...register("email")}
-                className="bg-card border-none text-textColor text-sm focus:outline-none block w-full p-2.5 "
-                value={email}
-                placeholder="Enter email to share document"
-                onChange={(event) => {
-                  setEmail(event.target.value);
-                }}
-              />
-            </div>
-
-            <button
-              type="submit"
-              className="text-white bg-themeColor focus:outline-none font-medium text-sm px-5 py-2.5 text-center inline"
-            >
-              Share
-            </button>
-          </div>
-        </form>
-      </div>
       <ToastContainer />
       <div className="container" ref={wrapperRef}></div>
     </>

@@ -19,7 +19,7 @@ function EditorLayout({ children }) {
         <Suspense>
           <Navbar />
           <div className="flex justify-center">
-            <div className="">{children}</div>
+            <div>{children}</div>
           </div>
 
           {showToastMsg ? <Toast msg={showToastMsg} /> : null}

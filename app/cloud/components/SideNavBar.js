@@ -151,7 +151,7 @@ function SideNavBar() {
         </div>
 
         <dialog id="my_modal_3" className="modal">
-          <CreateFolderModal closeModal={() => window.upload_file.close()} />
+          <CreateFolderModal closeModal={() => window.my_modal_3.close()} />
         </dialog>
         <dialog id="upload_file" className="modal">
           <UploadFileModal closeModal={() => window.upload_file.close()} />
