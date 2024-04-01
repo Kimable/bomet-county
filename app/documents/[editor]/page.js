@@ -5,7 +5,6 @@ import "quill/dist/quill.snow.css";
 import "./styles.css";
 import { io } from "socket.io-client";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
-import { useForm } from "react-hook-form";
 import useAuth from "@/app/middlewares/useAuth";
 import { cv, letter, minutes } from "../templates/templates";
 
@@ -36,10 +35,8 @@ export default function TextEditor() {
   const { editor: documentId } = useParams();
   const [socket, setSocket] = useState();
   const [quill, setQuill] = useState();
-  const { register, handleSubmit } = useForm();
 
   const [fileName, setFileName] = useState("");
-  const [email, setEmail] = useState("");
 
   // Get current user
   const user = useAuth();
