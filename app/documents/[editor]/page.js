@@ -164,7 +164,7 @@ export default function TextEditor() {
       body: JSON.stringify({ docId: documentId, fileName: data.fileName }),
     });
     let updatedFileName = await response.json();
-    console.log(updatedFileName);
+    showToast("File Name updated successfully");
   };
 
   // Sharing Document
