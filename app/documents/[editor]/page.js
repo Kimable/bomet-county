@@ -10,9 +10,12 @@ import useAuth from "@/app/middlewares/useAuth";
 import { cv, letter, minutes } from "../templates/templates";
 
 import ImageEdit from "quill-image-edit-module";
-import { FiShare } from "react-icons/fi";
 import { showToast } from "@/app/components/toast";
 import { ToastContainer } from "react-toastify";
+import BreadCrumb from "@/app/components/common/breadcrumbs/page";
+import { FaDownload } from "react-icons/fa";
+import { saveAs } from "file-saver";
+import { pdfExporter } from "quill-to-pdf";
 
 Quill.register("modules/imageEdit", ImageEdit);
 
@@ -94,6 +97,7 @@ export default function TextEditor() {
     });
   }, [socket, quill, documentId]);
 
+  // Save document automatically
   useEffect(() => {
     if (socket == null || quill == null) return;
 
@@ -174,8 +178,27 @@ export default function TextEditor() {
     console.log(updatedFileName);
   };
 
+  // Download pdf
+  async function downloadPdf() {
+    const delta = quill.getContents(); // gets the Quill delta
+    const pdfAsBlob = await pdfExporter.generatePdf(delta); // converts to PDF
+    saveAs(pdfAsBlob, `${fileName}.pdf`); // downloads from the browser
+  }
+
   return (
     <>
+      <div className="card rounded-lg shadow bg-card p-2 my-2">
+        {/* card header start */}
+        <div className="flex justify-between items-center my-2">
+          <BreadCrumb text="Document" />
+          <button
+            onClick={downloadPdf}
+            className="flex items-center text-white text-sm text-center bg-themeColor p-2 rounded-lg"
+          >
+            <FaDownload className="text-white mx-2" /> Download File
+          </button>
+        </div>
+      </div>
       <div className="flex flex-row">
         {/* Update file name */}
         <form className="my-5 w-96 mr-3" onSubmit={handleSubmit(onSubmit)}>
