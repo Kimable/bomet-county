@@ -20,15 +20,17 @@ const LeavesList = ({ leaves }) => {
   // api call
   const handleApproveOrReject = async (id, btnValue) => {
     try {
-      const response = await axios.post(`/api/admin/updateleave`, {
-        id,
-        btnValue,
+      const fetchLeaves = await fetch(`/api/admin/updateleave`, {
+        method: "POST",
+        body: JSON.stringify({ id, btnValue }),
       });
 
-      if (response.status === 200) {
+      const response = await fetchLeaves.json();
+
+      if (fetchLeaves.status === 200) {
         // Handle success
 
-        const updatedLeave = response.data.updatedLeave;
+        const updatedLeave = response.updatedLeave;
 
         // Update the leave in the local state
         setUpdatedLeaves((prevLeaves) =>
@@ -40,7 +42,7 @@ const LeavesList = ({ leaves }) => {
         // You might want to update your leave data here if needed
       } else {
         // Handle error
-        console.error("Error updating leave status:", response.data.message);
+        console.error("Error updating leave status:", response.message);
       }
     } catch (error) {
       console.error("Error updating leave status:", error);

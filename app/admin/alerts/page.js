@@ -6,8 +6,6 @@ import BreadCrumb from "@/app/components/common/breadcrumbs/page";
 import { FiAlertOctagon } from "react-icons/fi";
 import Modal from "react-modal";
 import AddAlert from "@/app/components/admin/addalert/page";
-import { useDispatch } from "react-redux";
-import { fetchAlerts } from "@/store/reducer/admin/fetchAlertReducer";
 
 const Alerts = () => {
   const [alertModal, setAlertModal] = useState(false);
@@ -39,20 +37,22 @@ const Alerts = () => {
       </button>
     </div>
   );
-
-  const dispatch = useDispatch();
   //  to fetch alerts
   useEffect(() => {
-    // Dispatch the action to fetch alerts
-    dispatch(fetchAlerts())
+    fetchAlerts();
+  }, []);
+
+  // Fetch Alerts after add a new alert
+  function fetchAlerts() {
+    fetch("/api/admin/fetchalerts", { cache: "reload" })
       .then((response) => {
-        // Assuming response.data is an array of alerts
-        setAlerts(response.data.alerts);
+        return response.json();
       })
+      .then((data) => setAlerts(data.alerts))
       .catch((error) => {
         console.error("Error fetching alerts:", error);
       });
-  }, [dispatch]);
+  }
 
   return (
     <SuperuserLayout>
@@ -99,7 +99,7 @@ const Alerts = () => {
         <ModalHeaderAlert />
 
         {/* Content inside the modal */}
-        <AddAlert />
+        <AddAlert fetchAlerts={fetchAlerts} setAlertModal={setAlertModal} />
       </Modal>
     </SuperuserLayout>
   );

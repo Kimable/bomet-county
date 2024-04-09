@@ -3,25 +3,19 @@ import React, { useEffect, useState } from "react";
 import SuperuserLayout from "@/app/components/layouts/superuserlayout/page";
 import BreadCrumb from "@/app/components/common/breadcrumbs/page";
 import { FiCalendar } from "react-icons/fi";
-import { useDispatch } from "react-redux";
 import LeavesList from "@/app/components/admin/leaves/page";
-import { fetchLeaves } from "@/store/reducer/admin/fetchLeaveReducer";
 import CurrentDate from "@/app/components/common/currentdate/page";
 
 const Leaves = () => {
   const [leaves, setLeaves] = useState([]);
 
-  const dispatch = useDispatch();
   //  to fetch leaves
   useEffect(() => {
-    // Dispatch the action to fetch leaves
-    dispatch(fetchLeaves())
+    fetch(`/api/admin/fetchleaves`)
       .then((response) => {
-        console.log(response);
-        // Assuming response.data is an array of leaves
-        setLeaves(response.data.allLeaves);
-        console.log(leaves);
+        return response.json();
       })
+      .then((fetchedLeaves) => setLeaves(fetchedLeaves.allLeaves))
       .catch((error) => {
         console.error("Error fetching leaves:", error);
       });

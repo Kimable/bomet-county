@@ -5,7 +5,7 @@ import AlertModel from "@/backend/models/Alert";
 const fetchAlertsHandler = async () => {
   try {
     // Fetch all alerts from the database
-    const alerts = await AlertModel.find();
+    const alerts = await AlertModel.find().sort({ _id: -1 }).limit(10);
 
     return NextResponse.json(
       {

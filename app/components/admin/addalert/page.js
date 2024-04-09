@@ -6,24 +6,13 @@ import { useDispatch } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const AddAlert = () => {
-  const showAlertStatusToast = (message) => {
-    toast.info(message, {
-      position: toast.POSITION.TOP_RIGHT,
-      autoClose: 3000, // 3 seconds
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
-  };
-
+const AddAlert = ({ fetchAlerts, setAlertModal }) => {
   const dispatch = useDispatch();
   const { register, handleSubmit } = useForm();
   const onSubmit = (data) => {
-    dispatch(addAlert(data)).then((response) => {
-      showAlertStatusToast("Alert Added Successfully");
+    dispatch(addAlert(data)).then((r) => {
+      fetchAlerts();
+      setAlertModal(false);
     });
   };
   return (
