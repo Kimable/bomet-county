@@ -11,7 +11,7 @@ const Leaves = () => {
 
   //  to fetch leaves
   useEffect(() => {
-    fetch(`/api/admin/fetchleaves`)
+    fetch(`/api/admin/fetchleaves`, { cache: "no-cache" })
       .then((response) => {
         return response.json();
       })

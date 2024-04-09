@@ -44,7 +44,7 @@ const Alerts = () => {
 
   // Fetch Alerts after add a new alert
   function fetchAlerts() {
-    fetch("/api/admin/fetchalerts", { cache: "reload" })
+    fetch("/api/admin/fetchalerts", { cache: "no-cache" })
       .then((response) => {
         return response.json();
       })

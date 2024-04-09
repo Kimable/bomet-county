@@ -23,6 +23,7 @@ const LeavesList = ({ leaves }) => {
       const fetchLeaves = await fetch(`/api/admin/updateleave`, {
         method: "POST",
         body: JSON.stringify({ id, btnValue }),
+        cache: "no-cache",
       });
 
       const response = await fetchLeaves.json();
