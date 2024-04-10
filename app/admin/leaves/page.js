@@ -5,6 +5,8 @@ import BreadCrumb from "@/app/components/common/breadcrumbs/page";
 import { FiCalendar } from "react-icons/fi";
 import LeavesList from "@/app/components/admin/leaves/page";
 import CurrentDate from "@/app/components/common/currentdate/page";
+import Toast from "@/app/cloud/components/Toast";
+import { ToastContainer } from "react-toastify";
 
 const Leaves = () => {
   const [leaves, setLeaves] = useState([]);
@@ -19,9 +21,13 @@ const Leaves = () => {
       .then((response) => {
         return response.json();
       })
-      .then((fetchedLeaves) => setLeaves(fetchedLeaves.allLeaves))
+      .then((fetchedLeaves) => {
+        setLeaves(fetchedLeaves.allLeaves);
+        Toast("Status Updated Successfully");
+      })
       .catch((error) => {
         console.error("Error fetching leaves:", error);
+        Toast("Status Failed to Update");
       });
   }
 
@@ -44,6 +50,7 @@ const Leaves = () => {
           )}
         </div>
       </div>
+      <ToastContainer />
     </SuperuserLayout>
   );
 };
