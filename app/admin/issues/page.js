@@ -6,11 +6,9 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ProblemLists from "@/app/components/common/issues/page";
 import SuperuserLayout from "@/app/components/layouts/superuserlayout/page";
-import { getHostUrl } from "@/app/middlewares/getHostUrl";
 
 const ReportProblem = () => {
   const [reports, setReports] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [hoveredReportId, setHoveredReportId] = useState(null);
   // Function to show a toast message
   const showToast = (message) => {
@@ -27,11 +25,7 @@ const ReportProblem = () => {
 
   //  to fetch reports
   useEffect(() => {
-    setLoading(true);
-
     fetchReports();
-
-    setLoading(false);
   }, []);
 
   // Custom function for fetching reports
@@ -97,7 +91,7 @@ const ReportProblem = () => {
           </div>
         </div>
 
-        {loading ? (
+        {reports.length <= 0 ? (
           <p className="text-center text-xl py-2">Loading...</p>
         ) : (
           <div className="relative">

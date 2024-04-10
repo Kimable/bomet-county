@@ -429,7 +429,7 @@ const AddUser = () => {
           <div className="mt-2 grid gap-6 mb-6 md:grid-cols-2">
             <div>
               <label
-                for="department"
+                htmlFor="department"
                 className="block mb-2 text-sm font-medium text-textColor"
               >
                 Department

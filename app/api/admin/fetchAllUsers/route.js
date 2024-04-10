@@ -31,4 +31,4 @@ const fetchAllUsers = async () => {
   }
 };
 
-export const GET = connectDb(fetchAllUsers);
+export const POST = connectDb(fetchAllUsers);

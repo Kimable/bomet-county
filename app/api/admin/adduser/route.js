@@ -7,8 +7,6 @@ const addUserHandler = async (request) => {
     // Extract the field values from the request body
     const employee = await request.json();
 
-    console.log("Received data:", employee);
-
     // Check if the email already exists in the database
     const existingUser = await UserModel.findOne({ email: employee.email });
     if (existingUser) {
@@ -42,6 +40,7 @@ const addUserHandler = async (request) => {
     return NextResponse.json(
       {
         message: "Failed to add user",
+        errorMessage: error.message,
       },
       {
         status: 500,

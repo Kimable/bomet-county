@@ -28,34 +28,31 @@ const Alerts = () => {
 
   return (
     <SuperuserLayout>
-      <div>
-        <div className="bg-card p-2 m-2 rounded-lg mb-5">
-          <div className="flex justify-between items-center my-2 ">
-            <BreadCrumb text="Alerts" />
-            <button
-              className="flex items-center text-white text-sm text-center bg-themeColor p-2 rounded-lg"
-              onClick={() => window.alert_modal.showModal()}
-            >
-              <FiAlertOctagon className="text-white mx-2" /> Add Alert
-            </button>
-          </div>
+      <div className="bg-card p-2 m-2 rounded-lg mb-5">
+        <div className="flex justify-between items-center my-2 ">
+          <BreadCrumb text="Alerts" />
+          <button
+            className="flex items-center text-white text-sm text-center bg-themeColor p-2 rounded-lg"
+            onClick={() => window.alert_modal.showModal()}
+          >
+            <FiAlertOctagon className="text-white mx-2" /> Add Alert
+          </button>
         </div>
-        {alerts.length > 0 ? (
-          <AlertsList alerts={alerts} />
-        ) : (
-          <p className="mx-2 text-xs">Loading...</p>
-        )}
       </div>
-
-      {/* Add Alert */}
-      <div className="card shadow bg-card p-2 mb-2">
-        <dialog id="alert_modal" className="modal">
+      {alerts.length > 0 ? (
+        <AlertsList alerts={alerts} />
+      ) : (
+        <p className="text-center text-xl py-2">Loading...</p>
+      )}
+      {/* Add Alert */}{" "}
+      <dialog id="alert_modal" className="modal">
+        <div className="shadow p-2 mb-2">
           <AddAlert
             fetchAlerts={fetchAlerts}
             closeAlertModal={() => window.alert_modal.close()}
           />
-        </dialog>
-      </div>
+        </div>
+      </dialog>
     </SuperuserLayout>
   );
 };

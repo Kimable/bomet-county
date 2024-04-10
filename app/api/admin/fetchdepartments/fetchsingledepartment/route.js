@@ -1,16 +1,27 @@
 import { NextResponse } from "next/server";
 import connectDb from "@/backend/middleware/db";
 import DepartmentModel from "@/backend/models/Departments";
+import UserModel from "@/backend/models/User";
 
-const fetchDepartments = async () => {
+const fetchDepartment = async (req) => {
   try {
     // Find all users who are team leads
-    const departments = await DepartmentModel.find();
+    const { departmentId } = await req.json();
+    const department = await DepartmentModel.findById(departmentId);
+
+    const users = await UserModel.find({ department: departmentId });
+
+    const departmentHead = await UserModel.findById(
+      department.headOfDepartment
+    );
 
     return NextResponse.json(
       {
-        departments,
+        department,
+        departmentHead,
+        users,
       },
+
       {
         status: 200,
       }
@@ -28,4 +39,4 @@ const fetchDepartments = async () => {
   }
 };
 
-export const POST = connectDb(fetchDepartments);
+export const POST = connectDb(fetchDepartment);

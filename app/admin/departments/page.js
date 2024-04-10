@@ -5,13 +5,17 @@ import CurrentDate from "@/app/components/common/currentdate/page";
 import BreadCrumb from "@/app/components/common/breadcrumbs/page";
 import { FiCalendar, FiHome, FiPlus } from "react-icons/fi";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 function page() {
   const [departments, setDepartments] = useState([]);
+  const router = useRouter();
 
   useEffect(() => {
     async function getDepatments() {
-      const deparments = await fetch(`/api/admin/fetchdepartments`);
+      const deparments = await fetch(`/api/admin/fetchdepartments`, {
+        method: "post",
+      });
       const res = await deparments.json();
       setDepartments(res.departments);
       console.log(res.departments);
@@ -33,7 +37,11 @@ function page() {
         ) : (
           <div className="flex flex-row flex-wrap">
             {departments.map((dep) => (
-              <div key={dep._id}>
+              <div
+                key={dep._id}
+                className="cursor-pointer"
+                onClick={() => router.push(`/admin/department/${dep._id}`)}
+              >
                 <div className="bg-themeColor py-4 px-6 m-2 w-72 rounded-lg">
                   <h2 className="text-white text-center">
                     {dep.departmentName}

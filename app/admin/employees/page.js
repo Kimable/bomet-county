@@ -11,7 +11,7 @@ const Employees = () => {
 
   useEffect(() => {
     setEmployees([]);
-    fetch(`/api/admin/fetchAllUsers`)
+    fetch(`/api/admin/fetchAllUsers`, { method: "post" })
       .then((res) => {
         return res.json();
       })
@@ -29,7 +29,7 @@ const Employees = () => {
           <FiCalendar className="text-white mx-2" /> <CurrentDate />
         </button>
       </div>
-      <div className="flex flex-wrap m-3 bg-base-200 my-9">
+      <div className="flex flex-wrap m-3 my-9">
         {employees.length === 0 ? (
           <h2 className="text-center m-5">Loading...</h2>
         ) : (
@@ -38,7 +38,7 @@ const Employees = () => {
             return (
               <div
                 key={employee._id}
-                className="card w-65 bg-base-100 shadow-xl  m-3"
+                className="card bg-base-100 shadow-2xl  m-3 w-72"
               >
                 <figure className="px-10 pt-10">
                   <img
@@ -49,20 +49,29 @@ const Employees = () => {
                   />
                 </figure>
                 <div className="card-body items-center text-center">
-                  <h2 className="card-title">
-                    Name: {employee.firstName} {employee.lastName}
+                  <h2 className="font-semibold">
+                    Name:{" "}
+                    <span className="font-bold text-themeColor">
+                      {employee.firstName} {employee.lastName}
+                    </span>
                   </h2>
-                  <p className="font-bold uppercase">
-                    ({employee.designation || "N/A"})
+                  <p className="font-normal text-sm">
+                    Position:{" "}
+                    <span className="font-bold text-themeColor">
+                      {employee.designation || "N/A"}
+                    </span>
                   </p>
-                  <p className="font-bold">
-                    Employment No.: {employee.employmentNo || "N/A"}
+                  <p className="font-normal">
+                    Employment No:{" "}
+                    <span className="font-bold text-themeColor">
+                      {employee.employmentNo || "N/A"}
+                    </span>
                   </p>
 
                   <div className="card-actions">
                     <Link
                       href={`/admin/employee/${employee._id}?id=${employee._id}`}
-                      className="btn btn-primary"
+                      className="btn btn-info"
                     >
                       View Employee
                     </Link>
