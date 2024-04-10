@@ -11,7 +11,11 @@ const Leaves = () => {
 
   //  to fetch leaves
   useEffect(() => {
-    fetch(`/api/admin/fetchleaves`, { cache: "no-cache" })
+    fetchLeaves();
+  }, []);
+
+  function fetchLeaves() {
+    fetch(`/api/admin/fetchleaves`, { method: "post" })
       .then((response) => {
         return response.json();
       })
@@ -19,7 +23,7 @@ const Leaves = () => {
       .catch((error) => {
         console.error("Error fetching leaves:", error);
       });
-  }, []);
+  }
 
   return (
     <SuperuserLayout>
@@ -34,7 +38,7 @@ const Leaves = () => {
         </div>
         <div className="flex flex-wrap justify-center w-full p-2">
           {leaves.length > 0 ? (
-            <LeavesList leaves={leaves} />
+            <LeavesList leaves={leaves} fetchLeaves={fetchLeaves} />
           ) : (
             <p className="mx-2 text-xs">Loading...</p>
           )}

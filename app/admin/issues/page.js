@@ -2,13 +2,10 @@
 import React, { useState, useEffect } from "react";
 import BreadCrumb from "@/app/components/common/breadcrumbs/page";
 import { FiAlertCircle } from "react-icons/fi";
-import { useDispatch } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ProblemLists from "@/app/components/common/issues/page";
-import { fetchProblem } from "@/store/reducer/admin/fetchProblemReducer";
 import SuperuserLayout from "@/app/components/layouts/superuserlayout/page";
-import axios from "axios";
 import { getHostUrl } from "@/app/middlewares/getHostUrl";
 
 const ReportProblem = () => {
@@ -28,24 +25,29 @@ const ReportProblem = () => {
     });
   };
 
-  const dispatch = useDispatch();
   //  to fetch reports
   useEffect(() => {
     setLoading(true);
-    // Fetch reports whenever the reports or alert status are updated
-    dispatch(fetchProblem())
+
+    fetchReports();
+
+    setLoading(false);
+  }, []);
+
+  // Custom function for fetching reports
+  function fetchReports() {
+    fetch(`/api/admin/fetchproblems`, { method: "post" })
       .then((response) => {
         // Assuming response.data is an array of reports
-        setReports(response.data.reports);
-        console.log(response.data.reports);
+        return response.json();
+      })
+      .then((response) => {
+        setReports(response.reports);
       })
       .catch((error) => {
         console.error("Error fetching reports:", error);
-      })
-      .finally(() => {
-        setLoading(false); // Set loading to false after fetch (success or failure)
       });
-  }, [dispatch]); // Include reports as a dependency
+  }
 
   // fetch the value for update alert
   const handleResolveClick = async (id) => {
@@ -69,10 +71,14 @@ const ReportProblem = () => {
   // update alert status
   const updateAlertStatus = async (id, newStatus) => {
     try {
-      await axios.post(`/api/admin/updateproblem`, {
-        id,
-        newStatus,
+      await fetch(`/api/admin/updateproblem`, {
+        method: "post",
+        body: JSON.stringify({
+          id,
+          newStatus,
+        }),
       });
+      fetchReports();
       showToast("Issue status updated");
     } catch (error) {
       console.error("Error updating alert status:", error);
@@ -105,18 +111,21 @@ const ReportProblem = () => {
                 <ProblemLists reports={[report]} />
                 {hoveredReportId === report._id && (
                   <div className="flex items-center">
-                    <button
-                      className="mx-1 md:text-sm text-xs text-center bg-greenColor text-white px-4 py-2 rounded-lg"
-                      onClick={() => handleResolveClick(report._id)}
-                    >
-                      Mark Resolve
-                    </button>
-                    <button
-                      className="mx-1 md:text-sm text-xs text-center bg-redColor text-white px-4 py-2 rounded-lg"
-                      onClick={() => handleUnresolveClick(report._id)}
-                    >
-                      Mark Unresolve
-                    </button>
+                    {report.status === "Unresolved" ? (
+                      <button
+                        className="mx-1 md:text-sm text-xs text-center bg-greenColor text-white px-4 py-2 rounded-lg"
+                        onClick={() => handleResolveClick(report._id)}
+                      >
+                        Mark Resolve
+                      </button>
+                    ) : (
+                      <button
+                        className="mx-1 md:text-sm text-xs text-center bg-redColor text-white px-4 py-2 rounded-lg"
+                        onClick={() => handleUnresolveClick(report._id)}
+                      >
+                        Mark Unresolve
+                      </button>
+                    )}
                   </div>
                 )}
               </div>

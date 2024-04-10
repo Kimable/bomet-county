@@ -28,4 +28,4 @@ const fetchAllReportsHandler = async () => {
   }
 };
 
-export const GET = connectDb(fetchAllReportsHandler);
+export const POST = connectDb(fetchAllReportsHandler);

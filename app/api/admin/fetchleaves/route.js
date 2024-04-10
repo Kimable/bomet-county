@@ -40,4 +40,4 @@ const viewAllLeavesHandler = async () => {
   }
 };
 
-export const GET = connectDb(viewAllLeavesHandler);
+export const POST = connectDb(viewAllLeavesHandler);
