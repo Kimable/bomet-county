@@ -1,6 +1,8 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { FiCheck, FiClock, FiInfo, FiShield, FiX } from "react-icons/fi";
+import { showToast } from "../../toast";
+import { ToastContainer } from "react-toastify";
 
 const LeavesList = ({ leaves, fetchLeaves }) => {
   const [hoveredIndex, setHoveredIndex] = useState(-1);
@@ -30,13 +32,15 @@ const LeavesList = ({ leaves, fetchLeaves }) => {
         // Handle success
 
         const updatedLeave = response.updatedLeave;
+
         // Fetch Leaves
         fetchLeaves();
-
+        showToast("Status Updated Successfully");
         // You might want to update your leave data here if needed
       } else {
         // Handle error
         console.error("Error updating leave status:", response.message);
+        showToast("Error updating leave status");
       }
     } catch (error) {
       console.error("Error updating leave status:", error);
@@ -159,6 +163,7 @@ const LeavesList = ({ leaves, fetchLeaves }) => {
             </div>
           );
         })}
+      <ToastContainer />
     </>
   );
 };
