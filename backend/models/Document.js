@@ -6,7 +6,7 @@ const documentSchema = new Schema(
   {
     _id: String,
     userId: String,
-    fileName: { type: String, default: `Document-${Date.now()}` },
+    fileName: { type: String, default: `Untitled Document` },
     parentFolderId: String,
     data: Object,
     sharedWith: [String],

@@ -4,39 +4,11 @@ import SuperuserLayout from "@/app/components/layouts/superuserlayout/page";
 import AlertsList from "@/app/components/common/alerts/page";
 import BreadCrumb from "@/app/components/common/breadcrumbs/page";
 import { FiAlertOctagon } from "react-icons/fi";
-import Modal from "react-modal";
 import AddAlert from "@/app/components/admin/addalert/page";
 
 const Alerts = () => {
-  const [alertModal, setAlertModal] = useState(false);
   const [alerts, setAlerts] = useState([]);
 
-  // Function to open the Alert modal
-  const openModalAlert = () => {
-    setAlertModal(true);
-  };
-
-  // Function to close the Alert modal
-  const closeModalAlert = () => {
-    setAlertModal(false);
-  };
-
-  // Custom header for the Alert modal
-  const ModalHeaderAlert = () => (
-    <div
-      className="p-2 border-b border-gray-300"
-      style={{ display: "flex", justifyContent: "space-between" }}
-    >
-      <BreadCrumb text="Add Alert" />
-
-      <button
-        onClick={closeModalAlert}
-        style={{ background: "none", border: "none", cursor: "pointer" }}
-      >
-        &times;
-      </button>
-    </div>
-  );
   //  to fetch alerts
   useEffect(() => {
     fetchAlerts();
@@ -44,7 +16,7 @@ const Alerts = () => {
 
   // Fetch Alerts after add a new alert
   function fetchAlerts() {
-    fetch("/api/admin/fetchalerts", { cache: "no-cache" })
+    fetch("/api/admin/fetchalerts", { next: { revalidate: 0 } })
       .then((response) => {
         return response.json();
       })
@@ -62,7 +34,7 @@ const Alerts = () => {
             <BreadCrumb text="Alerts" />
             <button
               className="flex items-center text-white text-sm text-center bg-themeColor p-2 rounded-lg"
-              onClick={openModalAlert}
+              onClick={() => window.alert_modal.showModal()}
             >
               <FiAlertOctagon className="text-white mx-2" /> Add Alert
             </button>
@@ -76,31 +48,14 @@ const Alerts = () => {
       </div>
 
       {/* Add Alert */}
-      <Modal
-        isOpen={alertModal}
-        onRequestClose={closeModalAlert}
-        contentLabel="Alert Modal"
-        shouldCloseOnOverlayClick={false}
-        shouldCloseOnEsc={true}
-        // Style the modal (optional)
-        style={{
-          content: {
-            margin: "auto",
-            borderRadius: "8px",
-            zIndex: 10,
-          },
-          overlay: {
-            zIndex: 9,
-            backgroundColor: "rgba(0, 0, 0, 0.5)",
-          },
-        }}
-      >
-        {/* Use the custom header */}
-        <ModalHeaderAlert />
-
-        {/* Content inside the modal */}
-        <AddAlert fetchAlerts={fetchAlerts} setAlertModal={setAlertModal} />
-      </Modal>
+      <div className="card shadow bg-card p-2 mb-2">
+        <dialog id="alert_modal" className="modal">
+          <AddAlert
+            fetchAlerts={fetchAlerts}
+            closeAlertModal={() => window.alert_modal.close()}
+          />
+        </dialog>
+      </div>
     </SuperuserLayout>
   );
 };

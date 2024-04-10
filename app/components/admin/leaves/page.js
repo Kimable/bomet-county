@@ -1,7 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { FiCheck, FiClock, FiInfo, FiShield, FiX } from "react-icons/fi";
-import axios from "axios";
 const LeavesList = ({ leaves }) => {
   const [hoveredIndex, setHoveredIndex] = useState(-1);
   const [updatedLeaves, setUpdatedLeaves] = useState(leaves);

@@ -1,26 +1,46 @@
 "use client";
-import { addAlert } from "@/store/reducer/admin/addAlertReducer";
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const AddAlert = ({ fetchAlerts, setAlertModal }) => {
-  const dispatch = useDispatch();
+const AddAlert = ({ fetchAlerts, closeAlertModal }) => {
   const { register, handleSubmit } = useForm();
-  const onSubmit = (data) => {
-    dispatch(addAlert(data)).then((r) => {
-      fetchAlerts();
-      setAlertModal(false);
+  const [loading, setLoading] = useState(false);
+
+  const onSubmit = async (data) => {
+    setLoading(true);
+    const add = await fetch(`/api/admin/addalert`, {
+      method: "post",
+      body: JSON.stringify(data),
     });
+    const response = await add.json();
+    console.log(response);
+    fetchAlerts();
+    setLoading(false);
+    closeAlertModal(true);
   };
-  return (
+
+  return loading ? (
+    <h2 className="modal-box p-9 items-center w-96 text-center text-lg text-green-600">
+      Saving Alert...
+    </h2>
+  ) : (
     <div>
-      <form className="mx-2  w-full " onSubmit={handleSubmit(onSubmit)}>
+      <form
+        method="dialog"
+        className="modal-box p-9 items-center w-96"
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        <a
+          onClick={closeAlertModal}
+          className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+        >
+          ✕
+        </a>
         <div className="my-4">
           <label
-            for="first_name"
+            htmlFor="first_name"
             className="block mb-2 text-sm font-medium text-textColor "
           >
             Alert Type
@@ -31,7 +51,9 @@ const AddAlert = ({ fetchAlerts, setAlertModal }) => {
             className="bg-card border border-card text-textColor text-sm rounded-lg focus:outline-none block w-full p-2.5 "
             {...register("status")}
           >
-            <option selected>Choose Alert Type</option>
+            <option defaultValue="Info" className="text-slate-500">
+              Choose Alert Type
+            </option>
             <option value="Success">Success</option>
             <option value="Info">Info</option>
             <option value="Warning">Warning</option>
@@ -55,7 +77,7 @@ const AddAlert = ({ fetchAlerts, setAlertModal }) => {
 
         <div className="mb-4">
           <label
-            for="message"
+            htmlFor="message"
             className="block mb-2 text-sm font-medium text-textColor "
           >
             Message
