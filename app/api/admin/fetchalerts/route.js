@@ -28,4 +28,4 @@ const fetchAlertsHandler = async () => {
   }
 };
 
-export const GET = connectDb(fetchAlertsHandler);
+export const POST = connectDb(fetchAlertsHandler);

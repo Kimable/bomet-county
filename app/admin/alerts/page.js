@@ -16,7 +16,7 @@ const Alerts = () => {
 
   // Fetch Alerts after add a new alert
   function fetchAlerts() {
-    fetch("/api/admin/fetchalerts", { next: { revalidate: 0 } })
+    fetch("/api/admin/fetchalerts", { method: "post" })
       .then((response) => {
         return response.json();
       })
