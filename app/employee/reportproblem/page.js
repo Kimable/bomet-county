@@ -4,17 +4,16 @@ import Modal from "react-modal";
 import EmployeeLayout from "@/app/components/layouts/employeelayout/page";
 import BreadCrumb from "@/app/components/common/breadcrumbs/page";
 import { FiAlertCircle } from "react-icons/fi";
-import { useDispatch } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { createReportProblem } from "@/store/reducer/user/reportProblemReducer"; // Import the action
 import { useForm } from "react-hook-form";
 import ProblemLists from "@/app/components/common/issues/page";
-import { fetchReports } from "@/store/reducer/user/fetchReportReducer";
+import { verifyUser } from "@/app/middlewares/verifyLoggedInUser";
 
 const ReportProblem = () => {
   const { register, handleSubmit } = useForm();
   const [reports, setReports] = useState([]);
+  const [token, setToken] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Function to open the modal
@@ -40,29 +39,39 @@ const ReportProblem = () => {
     });
   };
 
-  const dispatch = useDispatch();
   //  to fetch reports
   useEffect(() => {
-    // Dispatch the action to fetch reports
-    dispatch(fetchReports())
-      .then((response) => {
-        // Assuming response.data is an array of reports
-        setReports(response.data.reports);
-       
-      })
-      .catch((error) => {
-        console.error("Error fetching reports:", error);
-      });
-  }, [dispatch]);
+    let tkn = localStorage.getItem("token");
+    setToken(tkn);
+    fetchReports();
+  }, []);
 
- 
+  function fetchReports() {
+    const user = verifyUser(token);
+    fetch("/api/user/fetchreports", {
+      method: "post",
+      body: JSON.stringify({ userId: user?.userId }),
+    })
+      .then((res) => res.json())
+      .then((reps) => setReports(reps.reports));
+  }
 
   // submit new problem
-
   const onSubmit = async (data) => {
+    const user = verifyUser(token);
     try {
-      const response = await dispatch(createReportProblem(data));
-      if (response) {
+      const response = await fetch(`/api/user/reportproblem`, {
+        method: "post",
+        body: JSON.stringify({
+          userId: user.userId,
+          message: data.message,
+        }),
+      });
+      const reportIssue = await response.json();
+      console.log(reportIssue);
+
+      if (response.status == 200) {
+        fetchReports();
         showToast("Problem Reported Successfully");
         closeModal();
       } else {
@@ -108,7 +117,7 @@ const ReportProblem = () => {
         {reports.length > 0 ? (
           <ProblemLists reports={reports} />
         ) : (
-          <p className="mx-2 text-xs">Loading...</p>
+          <p className="m-2 text-center text-lg">No issue reported yet</p>
         )}
       </div>
 
@@ -157,7 +166,7 @@ const ReportProblem = () => {
               className="mx-1 text-white text-sm text-center bg-themeColor p-2 rounded-lg"
               type="submit"
             >
-              Request Now
+              Report Problem
             </button>
           </div>
         </form>

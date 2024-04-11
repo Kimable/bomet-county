@@ -6,8 +6,6 @@ const updateUser = async (request) => {
   try {
     // Extract the field values from the request body
     const user = await request.json();
-    console.log(user);
-
     // Update User
     const updateUser = await UserModel.findByIdAndUpdate(user._id, {
       department: user.department,

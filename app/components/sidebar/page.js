@@ -95,7 +95,7 @@ const CustomSidebar = ({ userRole, toggle, pathname }) => {
             >
               Employees Attendance
             </MenuItem>
-            <SubMenu icon={<FiClock />} label="Shift Management">
+            {/* <SubMenu icon={<FiClock />} label="Shift Management">
               <MenuItem
                 icon={<FiClock />}
                 active={activeItem === "/admin/shifts"}
@@ -114,28 +114,16 @@ const CustomSidebar = ({ userRole, toggle, pathname }) => {
                 {" "}
                 Add Shift{" "}
               </MenuItem>
-            </SubMenu>
+            </SubMenu> */}
 
-            <SubMenu icon={<FiBook />} label="Department Management">
-              <MenuItem
-                icon={<FiLayout />}
-                active={activeItem === "/admin/departments"}
-                onClick={() => handleMenuItemClick("/admin/departments")}
-                component={<Link href="/admin/departments" />}
-              >
-                {" "}
-                Departments{" "}
-              </MenuItem>
-              <MenuItem
-                icon={<FiPlusCircle />}
-                active={activeItem === "/admin/addDepartment"}
-                onClick={() => handleMenuItemClick("/admin/addDepartment")}
-                component={<Link href="/admin/addDepartment" />}
-              >
-                {" "}
-                Add Department{" "}
-              </MenuItem>
-            </SubMenu>
+            <MenuItem
+              icon={<FiHome />}
+              active={activeItem === "/admin/departments"}
+              onClick={() => handleMenuItemClick("/admin/departments")}
+              component={<Link href="/admin/departments" />}
+            >
+              Departments{" "}
+            </MenuItem>
 
             <MenuItem
               icon={<FiCalendar />}

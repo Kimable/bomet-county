@@ -44,16 +44,14 @@ function page() {
         <div>
           {department.length != 0 ? (
             <div>
-              <h1 className="font-bold text-lg text-center my-4 uppercase">
+              <h1 className="font-bold text-lg my-4 uppercase">
                 Department:{" "}
                 <span className="text-themeColor">
                   {department.departmentName}
                 </span>
               </h1>
               {/* Head of Department Info*/}
-              <h1 className="text-lg font-bold mx-3 my-8 text-center">
-                Head of Department
-              </h1>
+              <h1 className="text-lg font-bold my-6">Head of Department</h1>
               <div className="card rounded-lg shadow bg-card p-2 my-2">
                 <div className="flex mb-2 items-center">
                   <div>
@@ -106,9 +104,7 @@ function page() {
               {/*End Head of Department Info */}
 
               {/* Department Employees*/}
-              <h1 className="text-lg font-bold mx-3 my-8 text-center">
-                Department Employees
-              </h1>
+              <h1 className="text-lg font-bold my-6">Department Employees</h1>
               {employees.length !== 0 ? (
                 <div className="flex flex-wrap my-9">
                   {employees.length !== 0 &&
@@ -160,10 +156,18 @@ function page() {
                     })}
                 </div>
               ) : (
-                <h2 className="text-center font-bold text-slate-500">
-                  No employees added yet
-                </h2>
+                <>
+                  <h2 className="font-bold text-slate-500 mb-4">
+                    No employees added yet
+                  </h2>
+                </>
               )}
+              <Link
+                href="/admin/employees"
+                className="btn text-white text-sm text-center bg-themeColor p-2 rounded-lg"
+              >
+                Add Employees
+              </Link>
             </div>
           ) : (
             <h1 className="text-center text-lg font-semibold">Loading...</h1>

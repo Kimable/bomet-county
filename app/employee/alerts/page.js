@@ -14,17 +14,15 @@ const Alerts = () => {
   const dispatch = useDispatch();
   //  to fetch alerts
   useEffect(() => {
-    // Dispatch the action to fetch alerts
-    dispatch(fetchAlerts())
+    fetch("/api/admin/fetchalerts", { method: "post" })
       .then((response) => {
-        // Assuming response.data is an array of alerts
-
-        setAlerts(response.data.alerts);
+        return response.json();
       })
+      .then((data) => setAlerts(data.alerts))
       .catch((error) => {
         console.error("Error fetching alerts:", error);
       });
-  }, [dispatch]);
+  }, []);
   return (
     <EmployeeLayout>
       <div>
@@ -39,7 +37,9 @@ const Alerts = () => {
         {alerts.length > 0 ? (
           <AlertsList alerts={alerts} />
         ) : (
-          <p className="mx-2 text-xs">Loading...</p>
+          <p className="m-2 text-lg text-center font-bold">
+            Loading Notifications...
+          </p>
         )}
       </div>
     </EmployeeLayout>

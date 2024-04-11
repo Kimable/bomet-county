@@ -24,14 +24,14 @@ const Employees = () => {
   return (
     <SuperuserLayout>
       <div className="flex justify-between items-center mx-3 my-2 bg-card p-2  rounded-lg mb-5">
-        <BreadCrumb text="Employees" />
+        <BreadCrumb text="County Employees" />
         <button className="flex items-center text-white text-sm text-center bg-themeColor p-2 rounded-lg">
           <FiCalendar className="text-white mx-2" /> <CurrentDate />
         </button>
       </div>
       <div className="flex flex-wrap m-3 my-9">
         {employees.length === 0 ? (
-          <h2 className="text-center m-5">Loading...</h2>
+          <p className="text-center m-2 font-bold">Loading Employees...</p>
         ) : (
           employees.length !== 0 &&
           employees.map((employee) => {
@@ -73,7 +73,7 @@ const Employees = () => {
                       href={`/admin/employee/${employee._id}?id=${employee._id}`}
                       className="btn btn-info"
                     >
-                      View Employee
+                      Manage Employee
                     </Link>
                   </div>
                 </div>

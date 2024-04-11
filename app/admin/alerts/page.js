@@ -44,7 +44,7 @@ const Alerts = () => {
       ) : (
         <p className="text-center text-xl py-2">Loading...</p>
       )}
-      {/* Add Alert */}{" "}
+      {/* Add Alert */}
       <dialog id="alert_modal" className="modal">
         <div className="shadow p-2 mb-2">
           <AddAlert
