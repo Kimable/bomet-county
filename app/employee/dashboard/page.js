@@ -74,13 +74,13 @@ const Dashboard = () => {
         // Extract the response data from the 'data' property
         const responseData = response;
         console.log(response);
-        const checkinTime = responseData.data.checkIn;
+        const checkinTime = responseData.checkIn;
         setCheckinTime(checkinTime);
 
         if (responseData === undefined) {
           showAttendanceStatusToast("Already Checked In");
         } else {
-          showAttendanceStatusToast(responseData.data.message);
+          showAttendanceStatusToast(responseData.message);
         }
       })
       .catch((error) => {
@@ -97,7 +97,7 @@ const Dashboard = () => {
         const responseData = response;
         if (responseData !== undefined) {
           setOnBreak(true);
-          showAttendanceStatusToast(responseData.data.message);
+          showAttendanceStatusToast(responseData.message);
         } else {
           showAttendanceStatusToast(
             "You are not checked in. Cannot start break."
@@ -118,7 +118,7 @@ const Dashboard = () => {
         const responseData = response;
         console.log(responseData);
         setOnBreak(false);
-        showAttendanceStatusToast(responseData.data.message);
+        showAttendanceStatusToast(responseData.message);
       })
       .catch((error) => {
         console.log("attendance marking failed:", error.message);
@@ -133,8 +133,8 @@ const Dashboard = () => {
         // Extract the response data from the 'data' property
         const responseData = response;
         if (responseData) {
-          showAttendanceStatusToast(responseData.data.message);
-          setTotalTime(responseData.data.totalTime);
+          showAttendanceStatusToast(responseData.message);
+          setTotalTime(responseData.totalTime);
         } else {
           showAttendanceStatusToast("Already Checked Out");
         }
@@ -151,34 +151,37 @@ const Dashboard = () => {
 
   // Fetch the attendance details for the current date on component mount
   useEffect(() => {
+    fecthAttendance();
+  }, []);
+
+  const fecthAttendance = () => {
     dispatch(fetchAttendanceDetail()).then((response) => {
-      if (response && response.data && response.data.attendance) {
-        setCheckinTime(response.data.attendance.checkIn);
-        console.log(response.data.attendance.breaks);
+      if (response && response.attendance) {
+        setCheckinTime(response.attendance.checkIn);
+        console.log(response.attendance.breaks);
         // check in time in seconds
         const checkInDate = new Date(checkinTime);
         const checkinTimeInSeconds = Math.floor(checkInDate / 1000);
 
         // Check if the last element of breaks array has breakEndTime as null
         if (
-          response.data.attendance.breaks.length > 0 &&
-          response.data.attendance.breaks[
-            response.data.attendance.breaks.length - 1
-          ].breakEndTime === null
+          response.attendance.breaks.length > 0 &&
+          response.attendance.breaks[response.attendance.breaks.length - 1]
+            .breakEndTime === null
         ) {
           setOnBreak(true);
         } else {
           setOnBreak(false);
         }
-        if (response.data.attendance.totalTime) {
-          setTotalTime(response.data.attendance.totalTime);
+        if (response.attendance.totalTime) {
+          setTotalTime(response.attendance.totalTime);
         } else {
           console.log("c", currentTimeInSeconds, "t", checkinTimeInSeconds);
           setTotalTime(currentTimeInSeconds - checkinTimeInSeconds);
         }
       }
     });
-  }, []);
+  };
 
   // Format the check-in time in 12-hour format or show the current time if not checked in
   const formattedCheckinTime = checkinTime

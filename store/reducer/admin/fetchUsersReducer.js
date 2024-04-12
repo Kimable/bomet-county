@@ -1,5 +1,4 @@
 // userSlice.js
-import { getHostUrl } from "@/app/middlewares/getHostUrl";
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 

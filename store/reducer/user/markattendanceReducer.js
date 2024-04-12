@@ -22,15 +22,15 @@ const markAttendanceSlice = createSlice({
     },
     markAttendanceFailure: (state, action) => {
       state.loading = false;
-      state.error = action.payload;
+      state.error = action.payload; // assuming action.payload is an error object or standardized error format
     },
   },
 });
 
 export const { actions } = markAttendanceSlice;
 
-export const markAttendance = (action) => async (dispatch) => {
-  const token = localStorage.getItem("token"); // Get the token from localStorage
+export const markAttendance = (data) => async (dispatch) => {
+  const token = localStorage.getItem("token");
   console.log(token);
   const config = {
     headers: {
@@ -41,20 +41,24 @@ export const markAttendance = (action) => async (dispatch) => {
   dispatch(actions.markAttendanceStart());
 
   try {
-    const response = await axios.post(
-      `/api/user/markattendance/`,
-      action,
-      config
-    );
-    // Access the data property of the response object
-    const responseData = response.data;
-    dispatch(actions.markAttendanceSuccess(responseData));
-    console.log(responseData);
+    const att = await fetch(`/api/user/markattendance/`, {
+      method: "post",
+      body: JSON.stringify(data),
+      headers: { Authorization: token },
+    });
 
-    // Return the response object to be used in the .then block
+    let response = await att.json();
+    dispatch(actions.markAttendanceSuccess(response));
     return response;
   } catch (error) {
-    dispatch(actions.markAttendanceFailure(error.message));
+    // Standardizing error payload
+    const errorPayload = {
+      message: error.message,
+      error,
+      // Optionally, you can include additional fields like statusCode, details, etc.
+    };
+    dispatch(actions.markAttendanceFailure(errorPayload));
+    return errorPayload;
   }
 };
 

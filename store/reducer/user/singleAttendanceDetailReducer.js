@@ -33,22 +33,18 @@ export const { actions } = singleAttendanceDetailSlice;
 
 export const fetchAttendanceDetail = () => async (dispatch) => {
   const token = localStorage.getItem("token"); // Get the token from localStorage
-  console.log(token);
-  const config = {
-    headers: {
-      Authorization: token,
-    },
-  };
 
   dispatch(actions.fetchAttendanceDetailStart());
 
   try {
-    const response = await axios.get(
-      `/api/user/singleattendancedetail`,
-      config
-    );
+    const att = await fetch(`/api/user/singleattendancedetail`, {
+      method: "post",
+      headers: { Authorization: token },
+    });
+
+    let response = await att.json();
     // Access the data property of the response object
-    const responseData = response.data;
+    const responseData = response;
     dispatch(actions.fetchAttendanceDetailSuccess(responseData));
     console.log(responseData);
 
