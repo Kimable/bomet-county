@@ -5,8 +5,11 @@ import LineChart from "@/app/components/attendancechart/page";
 import { FiUserCheck } from "react-icons/fi";
 import { useRouter } from "next/navigation";
 import { verifyUser } from "@/app/middlewares/verifyLoggedInUser";
+import CurrentDate from "@/app/components/common/currentdate/page";
 const Dashboard = () => {
   const [user, setUser] = useState("");
+  const [employees, setEmployees] = useState([]);
+  const [inAttendance, setInAttendance] = useState(0);
   const router = useRouter();
 
   useEffect(() => {
@@ -23,6 +26,22 @@ const Dashboard = () => {
       return router.push("/");
     }
     setUser(loggedUser);
+  }, []);
+
+  useEffect(() => {
+    fetch("/api/admin/fetchusers")
+      .then((res) => res.json())
+      .then((users) => {
+        console.log(users);
+        setEmployees(users.users);
+        let inn = 0;
+        users.users.forEach((element) => {
+          if (element.attendance.length > 0) {
+            inn += 1;
+          }
+        });
+        setInAttendance(inn);
+      });
   }, []);
 
   return (
@@ -52,8 +71,8 @@ const Dashboard = () => {
               <div className="text-textColor font-bold mb-2">
                 Today's Attendance{" "}
               </div>
-              <div className="text-gray-500 font-light text-sm mb-5 ">
-                03 July 2023{" "}
+              <div className="text-gray-500 font-light text-base mb-5 ">
+                <CurrentDate />
               </div>
               <div className="flex items-center mb-4">
                 <div className="p-2 bg-green-100 rounded-full">
@@ -64,11 +83,11 @@ const Dashboard = () => {
                     Employees
                   </div>
                   <div className="text-greenColor font-medium text-sm  ">
-                    22/43
+                    {inAttendance}/{employees.length}
                   </div>
                 </div>
               </div>
-              <div className="flex items-center mb-4">
+              {/* <div className="flex items-center mb-4">
                 <div className="p-2 bg-yellow-100 rounded-full">
                   <FiUserCheck className="text-yellowColor w-[25px] h-[25px]" />
                 </div>
@@ -80,7 +99,7 @@ const Dashboard = () => {
                     18/23
                   </div>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

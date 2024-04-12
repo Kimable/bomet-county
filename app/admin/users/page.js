@@ -38,7 +38,9 @@ const Users = () => {
           record.checkIn &&
           !record.checkOut
       ).length;
-      return totalAttendance > 0 ? (onLeaveCount / totalAttendance) * 100 : 0;
+      return totalAttendance > 0
+        ? (onLeaveCount / totalAttendance).toFixed(2) * 100
+        : 0;
     }
 
     if (status === "checkOut") {
@@ -49,21 +51,27 @@ const Users = () => {
           record.checkIn &&
           record.checkOut
       ).length;
-      return totalAttendance > 0 ? (onLeaveCount / totalAttendance) * 100 : 0;
+      return totalAttendance > 0
+        ? (onLeaveCount / totalAttendance).toFixed(2) * 100
+        : 0;
     }
 
     if (status === "On Leave") {
       const onLeaveCount = attendance.filter(
         (record) => record.status === "On Leave"
       ).length;
-      return totalAttendance > 0 ? (onLeaveCount / totalAttendance) * 100 : 0;
+      return totalAttendance > 0
+        ? (onLeaveCount / totalAttendance).toFixed(2) * 100
+        : 0;
     }
 
     if (status === "Absent") {
       const absentCount = attendance.filter(
         (record) => record.status === "Absent"
       ).length;
-      return totalAttendance > 0 ? (absentCount / totalAttendance) * 100 : 0;
+      return totalAttendance > 0
+        ? (absentCount / totalAttendance).toFixed(2) * 100
+        : 0;
     }
 
     return 0; // Default value
@@ -184,40 +192,41 @@ const Users = () => {
                   <Droppable droppableId="checkInColumn">
                     {(provided) => (
                       <div {...provided.droppableProps} ref={provided.innerRef}>
-                        {users && users.map((user, userIndex) => (
-                          <Draggable
-                            key={user._id}
-                            draggableId={user._id}
-                            index={userIndex}
-                          >
-                            {(provided) => (
-                              <div
-                                ref={provided.innerRef}
-                                {...provided.draggableProps}
-                                {...provided.dragHandleProps}
-                              >
-                                {user.attendance.map((attendance) =>
-                                  attendance.checkIn &&
-                                  !attendance.checkOut &&
-                                  attendance.status !== "Absent" &&
-                                  attendance.status !== "On Leave" ? (
-                                    <UserCard
-                                      key={attendance._id}
-                                      btnColor="bg-greenColor"
-                                      name={
-                                        user.firstName + " " + user.lastName
-                                      }
-                                      email={user.email}
-                                      status={`Check In At ${new Date(
-                                        attendance.checkIn
-                                      ).toLocaleTimeString()}`}
-                                    />
-                                  ) : null
-                                )}
-                              </div>
-                            )}
-                          </Draggable>
-                        ))}
+                        {users &&
+                          users.map((user, userIndex) => (
+                            <Draggable
+                              key={user._id}
+                              draggableId={user._id}
+                              index={userIndex}
+                            >
+                              {(provided) => (
+                                <div
+                                  ref={provided.innerRef}
+                                  {...provided.draggableProps}
+                                  {...provided.dragHandleProps}
+                                >
+                                  {user.attendance.map((attendance) =>
+                                    attendance.checkIn &&
+                                    !attendance.checkOut &&
+                                    attendance.status !== "Absent" &&
+                                    attendance.status !== "On Leave" ? (
+                                      <UserCard
+                                        key={attendance._id}
+                                        btnColor="bg-greenColor"
+                                        name={
+                                          user.firstName + " " + user.lastName
+                                        }
+                                        email={user.email}
+                                        status={`Check In At ${new Date(
+                                          attendance.checkIn
+                                        ).toLocaleTimeString()}`}
+                                      />
+                                    ) : null
+                                  )}
+                                </div>
+                              )}
+                            </Draggable>
+                          ))}
                         {provided.placeholder}
                       </div>
                     )}
@@ -227,42 +236,43 @@ const Users = () => {
                   <Droppable droppableId="checkOutColumn">
                     {(provided) => (
                       <div {...provided.droppableProps} ref={provided.innerRef}>
-                        {users && users.map((user, userIndex) => (
-                          <Draggable
-                            key={user._id}
-                            draggableId={user._id}
-                            index={userIndex}
-                          >
-                            {(provided) => (
-                              <div
-                                ref={provided.innerRef}
-                                {...provided.draggableProps}
-                                {...provided.dragHandleProps}
-                              >
-                                <React.Fragment key={user._id}>
-                                  {user.attendance.map((attendance) =>
-                                    attendance.checkIn &&
-                                    attendance.checkOut &&
-                                    attendance.status !== "Absent" &&
-                                    attendance.status !== "On Leave" ? (
-                                      <UserCard
-                                        key={attendance._id}
-                                        btnColor="bg-redColor"
-                                        name={
-                                          user.firstName + " " + user.lastName
-                                        }
-                                        email={user.email}
-                                        status={`Check Out At ${new Date(
-                                          attendance.checkOut
-                                        ).toLocaleTimeString()}`}
-                                      />
-                                    ) : null
-                                  )}
-                                </React.Fragment>
-                              </div>
-                            )}
-                          </Draggable>
-                        ))}
+                        {users &&
+                          users.map((user, userIndex) => (
+                            <Draggable
+                              key={user._id}
+                              draggableId={user._id}
+                              index={userIndex}
+                            >
+                              {(provided) => (
+                                <div
+                                  ref={provided.innerRef}
+                                  {...provided.draggableProps}
+                                  {...provided.dragHandleProps}
+                                >
+                                  <React.Fragment key={user._id}>
+                                    {user.attendance.map((attendance) =>
+                                      attendance.checkIn &&
+                                      attendance.checkOut &&
+                                      attendance.status !== "Absent" &&
+                                      attendance.status !== "On Leave" ? (
+                                        <UserCard
+                                          key={attendance._id}
+                                          btnColor="bg-redColor"
+                                          name={
+                                            user.firstName + " " + user.lastName
+                                          }
+                                          email={user.email}
+                                          status={`Check Out At ${new Date(
+                                            attendance.checkOut
+                                          ).toLocaleTimeString()}`}
+                                        />
+                                      ) : null
+                                    )}
+                                  </React.Fragment>
+                                </div>
+                              )}
+                            </Draggable>
+                          ))}
                         {provided.placeholder}
                       </div>
                     )}
@@ -273,37 +283,38 @@ const Users = () => {
                   <Droppable droppableId="onLeaveColumn">
                     {(provided) => (
                       <div {...provided.droppableProps} ref={provided.innerRef}>
-                        {users && users.map((user, userIndex) => (
-                          <Draggable
-                            key={user._id}
-                            draggableId={user._id}
-                            index={userIndex}
-                          >
-                            {(provided) => (
-                              <div
-                                ref={provided.innerRef}
-                                {...provided.draggableProps}
-                                {...provided.dragHandleProps}
-                              >
-                                <React.Fragment key={user._id}>
-                                  {user.attendance.map((attendance) =>
-                                    attendance.status === "On Leave" ? (
-                                      <UserCard
-                                        key={attendance._id}
-                                        btnColor="bg-yellowColor"
-                                        name={
-                                          user.firstName + " " + user.lastName
-                                        }
-                                        email={user.email}
-                                        status="On Leave"
-                                      />
-                                    ) : null
-                                  )}
-                                </React.Fragment>
-                              </div>
-                            )}
-                          </Draggable>
-                        ))}
+                        {users &&
+                          users.map((user, userIndex) => (
+                            <Draggable
+                              key={user._id}
+                              draggableId={user._id}
+                              index={userIndex}
+                            >
+                              {(provided) => (
+                                <div
+                                  ref={provided.innerRef}
+                                  {...provided.draggableProps}
+                                  {...provided.dragHandleProps}
+                                >
+                                  <React.Fragment key={user._id}>
+                                    {user.attendance.map((attendance) =>
+                                      attendance.status === "On Leave" ? (
+                                        <UserCard
+                                          key={attendance._id}
+                                          btnColor="bg-yellowColor"
+                                          name={
+                                            user.firstName + " " + user.lastName
+                                          }
+                                          email={user.email}
+                                          status="On Leave"
+                                        />
+                                      ) : null
+                                    )}
+                                  </React.Fragment>
+                                </div>
+                              )}
+                            </Draggable>
+                          ))}
                         {provided.placeholder}
                       </div>
                     )}
@@ -313,37 +324,38 @@ const Users = () => {
                   <Droppable droppableId="absentColumn">
                     {(provided) => (
                       <div {...provided.droppableProps} ref={provided.innerRef}>
-                        {users && users.map((user, userIndex) => (
-                          <Draggable
-                            key={user._id}
-                            draggableId={user._id}
-                            index={userIndex}
-                          >
-                            {(provided) => (
-                              <div
-                                ref={provided.innerRef}
-                                {...provided.draggableProps}
-                                {...provided.dragHandleProps}
-                              >
-                                <React.Fragment key={user._id}>
-                                  {user.attendance.map((attendance) =>
-                                    attendance.status === "Absent" ? (
-                                      <UserCard
-                                        key={attendance._id}
-                                        btnColor="bg-lightText"
-                                        name={
-                                          user.firstName + " " + user.lastName
-                                        }
-                                        email={user.email}
-                                        status="Absent"
-                                      />
-                                    ) : null
-                                  )}
-                                </React.Fragment>
-                              </div>
-                            )}
-                          </Draggable>
-                        ))}
+                        {users &&
+                          users.map((user, userIndex) => (
+                            <Draggable
+                              key={user._id}
+                              draggableId={user._id}
+                              index={userIndex}
+                            >
+                              {(provided) => (
+                                <div
+                                  ref={provided.innerRef}
+                                  {...provided.draggableProps}
+                                  {...provided.dragHandleProps}
+                                >
+                                  <React.Fragment key={user._id}>
+                                    {user.attendance.map((attendance) =>
+                                      attendance.status === "Absent" ? (
+                                        <UserCard
+                                          key={attendance._id}
+                                          btnColor="bg-lightText"
+                                          name={
+                                            user.firstName + " " + user.lastName
+                                          }
+                                          email={user.email}
+                                          status="Absent"
+                                        />
+                                      ) : null
+                                    )}
+                                  </React.Fragment>
+                                </div>
+                              )}
+                            </Draggable>
+                          ))}
                         {provided.placeholder}
                       </div>
                     )}

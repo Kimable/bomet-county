@@ -9,12 +9,15 @@ import "react-toastify/dist/ReactToastify.css";
 import { useForm } from "react-hook-form";
 import ProblemLists from "@/app/components/common/issues/page";
 import { verifyUser } from "@/app/middlewares/verifyLoggedInUser";
+import { getToken } from "@/app/middlewares/getToken";
 
 const ReportProblem = () => {
   const { register, handleSubmit } = useForm();
   const [reports, setReports] = useState([]);
-  const [token, setToken] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const token = getToken();
+  const user = verifyUser(token);
 
   // Function to open the modal
   const openModal = () => {
@@ -41,13 +44,15 @@ const ReportProblem = () => {
 
   //  to fetch reports
   useEffect(() => {
-    let tkn = localStorage.getItem("token");
-    setToken(tkn);
-    fetchReports();
-  }, []);
+    fetch("/api/user/fetchreports", {
+      method: "post",
+      body: JSON.stringify({ userId: user?.userId }),
+    })
+      .then((res) => res.json())
+      .then((reps) => setReports(reps.reports));
+  }, [user]);
 
   function fetchReports() {
-    const user = verifyUser(token);
     fetch("/api/user/fetchreports", {
       method: "post",
       body: JSON.stringify({ userId: user?.userId }),
@@ -58,7 +63,6 @@ const ReportProblem = () => {
 
   // submit new problem
   const onSubmit = async (data) => {
-    const user = verifyUser(token);
     try {
       const response = await fetch(`/api/user/reportproblem`, {
         method: "post",

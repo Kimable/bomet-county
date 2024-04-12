@@ -21,6 +21,7 @@ const fetchReportsHandler = async (request) => {
     );
   } catch (error) {
     console.error("Error fetching reports:", error);
+
     return NextResponse.json(
       {
         message: "Failed to fetch reports",
